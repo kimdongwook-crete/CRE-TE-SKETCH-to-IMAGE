@@ -4,7 +4,11 @@ import { ImageResolution } from "../types";
 
 // Helper to get client with current key
 const getClient = () => {
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error("API Key is missing. Please set VITE_GEMINI_API_KEY in your environment variables (or .env.local for local development).");
+  }
+  return new GoogleGenAI({ apiKey });
 };
 
 export const analyzeSketch = async (
