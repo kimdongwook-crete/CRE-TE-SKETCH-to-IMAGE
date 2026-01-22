@@ -98,7 +98,7 @@ export const analyzeSketch = async (
               ::
               [Layer 2: Optical Physics Specs (Simulation)]
                ${mode === 'DETAIL'
-                ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition.'
+                ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)'
                 : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography'
               }
               ::
