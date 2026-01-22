@@ -8,6 +8,7 @@ import { saveToLibrary, getLibrary, deleteFromLibrary } from './utils/storage';
 import { ImageResolution, HistoryItem, ThemeMode, AnalysisReport, BlueprintMode } from './types';
 import { X, Sun, Moon, Zap, ImageIcon, Camera, Trash2, History } from 'lucide-react';
 import { parseAnalysisReport } from './utils/reportParser';
+import { metadata } from './constants';
 
 const STYLE_DEFINITIONS = {
   A: {
@@ -99,6 +100,20 @@ function App() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setTheme('dark');
     }
+  }, []);
+
+  // Update Metadata
+  useEffect(() => {
+    document.title = metadata.title;
+
+    // Update description meta tag
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', metadata.description);
   }, []);
 
   // Apply Theme
@@ -316,7 +331,7 @@ function App() {
         <header className="h-16 flex items-center justify-between px-6 shrink-0 z-30 bg-bw-white dark:bg-bw-black">
           <div className="flex items-center gap-4">
             <span className="font-display text-3xl pt-1">C</span>
-            <h1 className="font-display text-[1.575rem] tracking-wide pt-1">SKETCH TO IMAGE</h1>
+            <h1 className="font-display text-[1.575rem] tracking-wide pt-1">{metadata.title.toUpperCase()}</h1>
           </div>
           <div className="flex items-center gap-8">
             <button
