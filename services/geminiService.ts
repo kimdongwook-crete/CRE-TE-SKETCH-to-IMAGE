@@ -144,14 +144,27 @@ export const generateBlueprintImage = async (
   const ai = getClient();
   const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
 
-  // Map UI resolution to API pixel dimensions
-  const resolutionMap: Record<string, string> = {
-    '1K': '1280x720',
-    '2K': '1920x1080',
-    '4K': '3840x2160'
+  // Dynamic Resolution Map based on Aspect Ratio
+  const getTargetResolution = (res: ImageResolution, ratio: string): string => {
+    switch (ratio) {
+      case '16:9':
+        if (res === ImageResolution.Res_4K) return '3840x2160';
+        if (res === ImageResolution.Res_2K) return '1920x1080';
+        return '1280x720';
+      case '4:3':
+        if (res === ImageResolution.Res_4K) return '2880x2160';
+        if (res === ImageResolution.Res_2K) return '1440x1080';
+        return '1024x768';
+      case '1:1':
+        if (res === ImageResolution.Res_4K) return '2160x2160';
+        if (res === ImageResolution.Res_2K) return '1080x1080';
+        return '1024x1024';
+      default:
+        return '1024x1024';
+    }
   };
 
-  const targetResolution = resolutionMap[resolution] || '1024x1024';
+  const targetResolution = getTargetResolution(resolution, aspectRatio);
 
   try {
     const response = await ai.models.generateContent({
