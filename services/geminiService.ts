@@ -172,7 +172,7 @@ export const generateBlueprintImage = async (
       contents: {
         parts: [
           {
-            text: prompt
+            text: "STRICTLY MAINTAIN THE EXACT FRAMING AND PROPORTIONS OF THE INPUT IMAGE. DO NOT ZOOM IN. DO NOT CROP. RENDER THE FULL VIEW.\n\n" + prompt
           },
           {
             inlineData: {
@@ -185,7 +185,6 @@ export const generateBlueprintImage = async (
       config: {
         imageConfig: {
           imageSize: targetResolution as any,
-          aspectRatio: aspectRatio,
         }
       }
     });
