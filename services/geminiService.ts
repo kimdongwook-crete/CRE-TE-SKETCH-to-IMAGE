@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, TIMEOUT_DURATION } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -9,6 +9,25 @@ const getClient = () => {
     throw new Error("API Key is missing. Please set NEXT_PUBLIC_GOOGLE_API_KEY in your environment variables (or .env.local for local development).");
   }
   return new GoogleGenAI({ apiKey });
+};
+
+// Timeout Helper
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error("TIMEOUT"));
+    }, ms);
+
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch((reason) => {
+        clearTimeout(timer);
+        reject(reason);
+      });
+  });
 };
 
 export const analyzeSketch = async (
@@ -53,18 +72,19 @@ export const analyzeSketch = async (
   }
 
   try {
-    const response = await ai.models.generateContent({
-      model: MODEL_ANALYSIS,
-      contents: {
-        parts: [
-          {
-            inlineData: {
-              mimeType: 'image/png',
-              data: cleanBase64
-            }
-          },
-          {
-            text: `
+    const generate = async (modelName: string) => {
+      return await ai.models.generateContent({
+        model: modelName,
+        contents: {
+          parts: [
+            {
+              inlineData: {
+                mimeType: 'image/png',
+                data: cleanBase64
+              }
+            },
+            {
+              text: `
               Analyze this architectural sketch using the "4-Layer Blueprint Realization" method.
               
               User Context: "${userNotes || 'None'}"
@@ -98,9 +118,9 @@ export const analyzeSketch = async (
               ::
               [Layer 2: Optical Physics Specs (Simulation)]
                ${mode === 'DETAIL'
-                ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)'
-                : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography'
-              }
+                  ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)'
+                  : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography'
+                }
               ::
               [Layer 3: Material, Atmosphere & Entropy (POSI-GAP)]
               Facade strictly clad in [Specific Brand/Material Name], [Weathering/Patina Details], Volumetric Fog, Diffused Soft Light, [Time of Day/Weather], Quiet Confidence, God Rays
@@ -119,14 +139,28 @@ export const analyzeSketch = async (
               * **Option A (Time/Weather Shift):** [Proposal]
               * **Option B (Material Variation):** [Proposal]
             `
-          }
-        ]
-      },
-      config: {
-        tools: [{ googleSearch: {} }],
-        // thinkingConfig: { thinkingBudget: 1024 }, // Removed for speed
+            }
+          ]
+        },
+        config: {
+          tools: [{ googleSearch: {} }],
+        }
+      });
+    };
+
+    let response;
+    try {
+      // Primary Attempt
+      response = await withTimeout(generate(MODEL_ANALYSIS), TIMEOUT_DURATION);
+    } catch (error) {
+      if (error instanceof Error && error.message === "TIMEOUT") {
+        console.warn(`Analysis timed out. Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
+        // Fallback Attempt
+        response = await generate(MODEL_ANALYSIS_FALLBACK);
+      } else {
+        throw error;
       }
-    });
+    }
 
     return response.text || "A hyper-realistic architectural photograph of a modern building based on the provided sketch.";
   } catch (error) {
@@ -167,27 +201,43 @@ export const generateBlueprintImage = async (
   const targetResolution = getTargetResolution(resolution, aspectRatio);
 
   try {
-    const response = await ai.models.generateContent({
-      model: MODEL_IMAGE_GEN,
-      contents: {
-        parts: [
-          {
-            text: "STRICTLY MAINTAIN THE EXACT FRAMING AND PROPORTIONS OF THE INPUT IMAGE. DO NOT ZOOM IN. DO NOT CROP. RENDER THE FULL VIEW.\n\n" + prompt
-          },
-          {
-            inlineData: {
-              mimeType: 'image/png',
-              data: cleanBase64
+    const generate = async (modelName: string) => {
+      return await ai.models.generateContent({
+        model: modelName,
+        contents: {
+          parts: [
+            {
+              text: "STRICTLY MAINTAIN THE EXACT FRAMING AND PROPORTIONS OF THE INPUT IMAGE. DO NOT ZOOM IN. DO NOT CROP. RENDER THE FULL VIEW.\n\n" + prompt
+            },
+            {
+              inlineData: {
+                mimeType: 'image/png',
+                data: cleanBase64
+              }
             }
+          ]
+        },
+        config: {
+          imageConfig: {
+            imageSize: targetResolution as any,
           }
-        ]
-      },
-      config: {
-        imageConfig: {
-          imageSize: targetResolution as any,
         }
+      });
+    };
+
+    let response;
+    try {
+      // Primary Attempt
+      response = await withTimeout(generate(MODEL_IMAGE_GEN), TIMEOUT_DURATION);
+    } catch (error) {
+      if (error instanceof Error && error.message === "TIMEOUT") {
+        console.warn(`Image generation timed out. Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
+        // Fallback Attempt
+        response = await generate(MODEL_IMAGE_GEN_FALLBACK);
+      } else {
+        throw error;
       }
-    });
+    }
 
     const parts = response.candidates?.[0]?.content?.parts;
 
