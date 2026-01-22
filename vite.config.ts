@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     define: {
-      // 'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY), // Removed: Using VITE_ prefix standard
+      'process.env.NEXT_PUBLIC_GOOGLE_API_KEY': JSON.stringify(env.NEXT_PUBLIC_GOOGLE_API_KEY),
     },
     resolve: {
       alias: {

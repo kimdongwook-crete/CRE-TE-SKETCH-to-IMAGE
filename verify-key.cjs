@@ -8,7 +8,7 @@ let apiKey = '';
 
 try {
     const envContent = fs.readFileSync(envPath, 'utf8');
-    const match = envContent.match(/API_KEY=(.*)/);
+    const match = envContent.match(/NEXT_PUBLIC_GOOGLE_API_KEY=(.*)/);
     if (match && match[1]) {
         apiKey = match[1].trim().replace(/["']/g, '');
     }
