@@ -153,9 +153,10 @@ export const analyzeSketch = async (
     try {
       // Primary Attempt
       response = await withTimeout(generate(MODEL_ANALYSIS), TIMEOUT_DURATION);
-    } catch (error) {
-      if (error instanceof Error && error.message === "TIMEOUT") {
-        console.warn(`Analysis timed out. Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
+    } catch (error: any) {
+      const isOverloaded = error.message?.includes('503') || error.message?.includes('overloaded');
+      if (error.message === "TIMEOUT" || isOverloaded) {
+        console.warn(`Analysis failed (Timeout/Overloaded). Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
         // Fallback Attempt
         response = await generate(MODEL_ANALYSIS_FALLBACK);
       } else {
@@ -230,9 +231,10 @@ export const generateBlueprintImage = async (
     try {
       // Primary Attempt
       response = await withTimeout(generate(MODEL_IMAGE_GEN), TIMEOUT_DURATION);
-    } catch (error) {
-      if (error instanceof Error && error.message === "TIMEOUT") {
-        console.warn(`Image generation timed out. Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
+    } catch (error: any) {
+      const isOverloaded = error.message?.includes('503') || error.message?.includes('overloaded');
+      if (error.message === "TIMEOUT" || isOverloaded) {
+        console.warn(`Image generation failed (Timeout/Overloaded). Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
         // Fallback Attempt
         response = await generate(MODEL_IMAGE_GEN_FALLBACK);
       } else {
