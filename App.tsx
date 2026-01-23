@@ -451,7 +451,7 @@ function App() {
                   /* MAIN FORM CONTENT */
                   <>
                     <div className="space-y-3">
-                      <label className="font-display text-xl block">CONTEXT</label>
+                      <label className="font-display text-xl block">CODE</label>
                       <textarea
                         className="w-full h-32 p-3 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400"
                         placeholder="Describe materials, lighting..."
@@ -668,6 +668,7 @@ function App() {
 
               {/* Text: Mono, Smaller, Blinking, 10s/5s cycle */}
               <div className="flex flex-col items-center gap-2">
+                <span className="text-sm font-medium text-gray-400 tracking-wider">CODE</span>
                 <h2 className="font-mono text-xl tracking-widest uppercase animate-blink">
                   {loadingSeconds % 15 < 10 ? processingStep : "PLEASE WAIT"}
                 </h2>
