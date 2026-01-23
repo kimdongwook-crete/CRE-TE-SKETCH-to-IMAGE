@@ -109,6 +109,7 @@ export const analyzeSketch = async (
               * **Geometry (Layer 1 Input):** [Main structural lines/forms to preserve]
               * **Materiality (Layer 3 Input):** [Specific brand/material names replacing hatching]
               * **Space Hierarchy:** [Foreground/Mid/Background analysis]
+              * **Context Inference:** [Urban/Nature/Industrial based on building typology]
 
               ## 3. Final Execution Prompt (최종 실행 프롬프트)
               \`\`\`
@@ -118,12 +119,12 @@ export const analyzeSketch = async (
               ::
               [Layer 2: Optical Physics Specs (Simulation)]
                ${mode === 'DETAIL'
-                  ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)'
-                  : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography'
+                  ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. Asymmetrical Composition, Negative Space, Wide Angle View, Rule of Thirds. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography, Subtle Film Grain, Slight Motion Blur, Micro-Dust/Dirty Lens Effect)'
+                  : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography, Subtle Film Grain, Slight Motion Blur, Micro-Dust/Dirty Lens Effect'
                 }
               ::
               [Layer 3: Material, Atmosphere & Entropy (POSI-GAP)]
-              Facade strictly clad in [Specific Brand/Material Name], [Weathering/Patina Details], Volumetric Fog, Diffused Soft Light, [Time of Day/Weather], Quiet Confidence, God Rays
+              Facade strictly clad in [Specific Brand/Material Name], [Weathering/Patina Details], Volumetric Fog, Diffused Soft Light, [Time of Day/Weather], [Context Inference Result], Quiet Confidence, God Rays
               ::
               [Layer 4: Semantic Constraints & Exclusion]
               --no (cars, pedestrians, bokeh, depth of field, distortion, keystoning, ornamental details, cartoonish, illustration, text, signature, vertical convergence, tilted lines, leaning buildings)
