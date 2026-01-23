@@ -668,7 +668,7 @@ function App() {
 
               {/* Text: Mono, Smaller, Blinking, 10s/5s cycle */}
               <div className="flex flex-col items-center gap-2">
-                <span className="text-sm font-medium text-gray-400 tracking-wider">CODE</span>
+
                 <h2 className="font-mono text-xl tracking-widest uppercase animate-blink">
                   {loadingSeconds % 15 < 10 ? processingStep : "PLEASE WAIT"}
                 </h2>
