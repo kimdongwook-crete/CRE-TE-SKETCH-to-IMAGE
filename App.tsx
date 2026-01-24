@@ -556,7 +556,7 @@ function App() {
                       <div className="h-16 flex items-center justify-between -mt-6 -mx-6 px-6 mb-2">
                         <label className="font-display text-xl block pt-1">LOGIC & ANALYSIS</label>
                         <button
-                          onClick={() => setAnalysisReport(null)}
+                          onClick={() => setShowLibrary(true)}
                           className="p-2 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors rounded-none"
                         >
                           <X size={24} strokeWidth={1.5} />
