@@ -552,17 +552,17 @@ function App() {
                 {analysisReport ? (
                   <>
                     {/* LOGIC & ANALYSIS */}
-                    <div className="space-y-3">
+                    <div className="space-y-3 flex-1 flex flex-col min-h-0">
                       <div className="h-16 flex items-center justify-between -mt-6 -mx-6 px-6 mb-2">
                         <label className="font-display text-xl block pt-1">LOGIC & ANALYSIS</label>
                         <button
-                          onClick={() => setShowLibrary(true)}
+                          onClick={() => setAnalysisReport(null)}
                           className="p-2 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors rounded-none"
                         >
                           <X size={24} strokeWidth={1.5} />
                         </button>
                       </div>
-                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 max-h-48 overflow-y-auto">
+                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
                         <p className="font-bold">▪ Metacognitive Analysis</p>
                         <p className="opacity-80">{analysisReport.metacognitive.diagnosis}</p>
                         <p className="opacity-60 text-[10px]">{analysisReport.metacognitive.reasoning}</p>
@@ -573,9 +573,10 @@ function App() {
                     </div>
 
                     {/* VERIFICATION & OPTIONS */}
-                    <div className="space-y-3">
+                    {/* VERIFICATION & OPTIONS */}
+                    <div className="space-y-3 flex-1 flex flex-col min-h-0">
                       <label className="font-display text-xl block">VERIFICATION & OPTIONS</label>
-                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 max-h-48 overflow-y-auto">
+                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
                         <p className="font-bold">▪ Iterative Refinement</p>
                         <ul className="list-disc pl-3 opacity-80">
                           <li>{analysisReport.refinement.optionA}</li>
