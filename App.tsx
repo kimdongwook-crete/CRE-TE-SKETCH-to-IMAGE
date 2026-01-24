@@ -387,7 +387,7 @@ function App() {
 
             {/* Conditional Rendering based on Tab */}
             {activeTab === 'create' ? (
-              <div className="flex flex-col gap-6 short:gap-3 h-full">
+              <div className="flex flex-col gap-6 short:gap-3 min-h-full md:h-full">
                 {/*
                     CONTENT AREA
                     Swaps between Main Form and Style View
