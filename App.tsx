@@ -364,7 +364,7 @@ function App() {
             />
           )}
 
-          <div className="flex-1 relative bg-white dark:bg-black flex flex-col min-w-0">
+          <div className="relative bg-white dark:bg-black flex flex-col min-w-0 h-[45vh] md:h-auto md:flex-1">
             <div className="w-full h-full relative">
               {activeTab === 'create' && (
                 <CanvasBoard
@@ -380,7 +380,7 @@ function App() {
               )}
             </div>
           </div>
-          <div className="w-full md:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-6 short:gap-3 shrink-0 z-[51] overflow-y-auto border-t md:border-t-0 md:border-l border-black/10 dark:border-white/10 relative">
+          <div className="w-full md:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-6 short:gap-3 z-[51] overflow-y-auto border-t md:border-t-0 md:border-l border-black/10 dark:border-white/10 relative flex-1 md:flex-none md:h-full">
             {isProcessing && (
               <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
             )}
