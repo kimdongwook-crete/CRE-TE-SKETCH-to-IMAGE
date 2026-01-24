@@ -553,11 +553,11 @@ function App() {
                   <>
                     {/* LOGIC & ANALYSIS */}
                     <div className="space-y-3 flex-1 flex flex-col min-h-0">
-                      <div className="h-16 flex items-center justify-between -mt-6 -mx-6 px-6 mb-2">
-                        <label className="font-display text-xl block pt-1">LOGIC & ANALYSIS</label>
+                      <div className="flex items-center justify-between">
+                        <label className="font-display text-xl block">LOGIC & ANALYSIS</label>
                         <button
                           onClick={() => setShowLibrary(true)}
-                          className="p-2 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors rounded-none"
+                          className="hover:opacity-60 transition-opacity"
                         >
                           <X size={24} strokeWidth={1.5} />
                         </button>
