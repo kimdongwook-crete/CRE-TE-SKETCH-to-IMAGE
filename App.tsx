@@ -325,7 +325,7 @@ function App() {
   return (
     <ApiKeyGuard>
       <div className="h-screen w-full flex flex-col bg-bw-white text-bw-black dark:bg-bw-black dark:text-bw-white transition-colors duration-300">
-        <header className="h-16 short:h-12 flex items-center justify-between px-6 short:px-4 shrink-0 z-30 bg-bw-white dark:bg-bw-black border-b border-black/5 dark:border-white/5">
+        <header className="h-16 short:h-12 flex items-center justify-between px-6 short:px-4 shrink-0 z-30 bg-bw-white dark:bg-bw-black">
           <div className="flex items-center gap-4">
             <span className="font-display text-3xl short:text-2xl pt-1">C</span>
             <h1 className="font-display text-[1.575rem] tracking-wide pt-1">{metadata.title.toUpperCase()}</h1>
