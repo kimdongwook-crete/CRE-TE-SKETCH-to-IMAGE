@@ -96,10 +96,7 @@ function App() {
     };
     initData();
 
-    // Check system preference for dark mode
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
+    initData();
   }, []);
 
   // Update Metadata
@@ -453,7 +450,7 @@ function App() {
                     <div className="space-y-3 short:space-y-1.5">
                       <label className="font-display text-xl short:text-lg block">CODE</label>
                       <textarea
-                        className="w-full h-32 short:h-20 p-3 short:p-2 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400"
+                        className="w-full h-28 short:h-20 p-3 short:p-2 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400"
                         placeholder="Describe materials, lighting..."
                         value={userPrompt}
                         onChange={(e) => setUserPrompt(e.target.value)}
