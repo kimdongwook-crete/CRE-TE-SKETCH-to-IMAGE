@@ -348,7 +348,7 @@ function App() {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        <main className="flex-1 flex flex-col landscape:flex-row overflow-hidden relative">
           {showLibrary && (
             <Library
               items={libraryItems}
@@ -361,7 +361,7 @@ function App() {
             />
           )}
 
-          <div className="relative bg-white dark:bg-black flex flex-col min-w-0 h-[30vh] md:h-auto md:flex-1">
+          <div className="relative bg-white dark:bg-black flex flex-col min-w-0 h-[30vh] landscape:h-auto landscape:flex-1">
             <div className="w-full h-full relative">
               {activeTab === 'create' && (
                 <CanvasBoard
@@ -377,7 +377,7 @@ function App() {
               )}
             </div>
           </div>
-          <div className="w-full md:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[51] overflow-y-auto border-t md:border-t-0 md:border-l border-black/10 dark:border-white/10 relative flex-1 md:flex-none md:h-full">
+          <div className="w-full landscape:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[51] overflow-y-auto border-t landscape:border-t-0 landscape:border-l border-black/10 dark:border-white/10 relative flex-1 landscape:flex-none landscape:h-full">
             {isProcessing && (
               <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
             )}
