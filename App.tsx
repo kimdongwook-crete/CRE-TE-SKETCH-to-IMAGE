@@ -328,9 +328,9 @@ function App() {
   return (
     <ApiKeyGuard>
       <div className="h-screen w-full flex flex-col bg-bw-white text-bw-black dark:bg-bw-black dark:text-bw-white transition-colors duration-300">
-        <header className="h-16 flex items-center justify-between px-6 shrink-0 z-30 bg-bw-white dark:bg-bw-black">
+        <header className="h-16 short:h-12 flex items-center justify-between px-6 short:px-4 shrink-0 z-30 bg-bw-white dark:bg-bw-black border-b border-black/5 dark:border-white/5">
           <div className="flex items-center gap-4">
-            <span className="font-display text-3xl pt-1">C</span>
+            <span className="font-display text-3xl short:text-2xl pt-1">C</span>
             <h1 className="font-display text-[1.575rem] tracking-wide pt-1">{metadata.title.toUpperCase()}</h1>
           </div>
           <div className="flex items-center gap-8">
@@ -351,7 +351,7 @@ function App() {
           </div>
         </header>
 
-        <main className="flex-1 flex overflow-hidden relative">
+        <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
           {showLibrary && (
             <Library
               items={libraryItems}
@@ -380,14 +380,14 @@ function App() {
               )}
             </div>
           </div>
-          <div className="w-full md:w-[320px] bg-bw-white dark:bg-bw-black p-6 flex flex-col gap-6 shrink-0 z-[51] overflow-y-auto border-l border-black/10 dark:border-white/10 relative">
+          <div className="w-full md:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-6 short:gap-3 shrink-0 z-[51] overflow-y-auto border-t md:border-t-0 md:border-l border-black/10 dark:border-white/10 relative">
             {isProcessing && (
               <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
             )}
 
             {/* Conditional Rendering based on Tab */}
             {activeTab === 'create' ? (
-              <div className="flex flex-col gap-6 h-full">
+              <div className="flex flex-col gap-6 short:gap-3 h-full">
                 {/*
                     CONTENT AREA
                     Swaps between Main Form and Style View
@@ -450,10 +450,10 @@ function App() {
                 ) : (
                   /* MAIN FORM CONTENT */
                   <>
-                    <div className="space-y-3">
-                      <label className="font-display text-xl block">CODE</label>
+                    <div className="space-y-3 short:space-y-1.5">
+                      <label className="font-display text-xl short:text-lg block">CODE</label>
                       <textarea
-                        className="w-full h-32 p-3 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400"
+                        className="w-full h-32 short:h-20 p-3 short:p-2 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400"
                         placeholder="Describe materials, lighting..."
                         value={userPrompt}
                         onChange={(e) => setUserPrompt(e.target.value)}
@@ -461,15 +461,15 @@ function App() {
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="font-display text-xl block">RESOLUTION</label>
+                    <div className="space-y-3 short:space-y-1.5">
+                      <label className="font-display text-xl short:text-lg block">RESOLUTION</label>
                       <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
                         {Object.values(ImageResolution).map((res, idx) => (
                           <button
                             key={res}
                             onClick={() => setResolution(res)}
                             disabled={isProcessing}
-                            className={`py-2 font-display text-lg transition-all ${resolution === res
+                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${resolution === res
                               ? 'bg-black text-white dark:bg-white dark:text-black'
                               : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
                               } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
@@ -480,15 +480,15 @@ function App() {
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="font-display text-xl block">ASPECT RATIO</label>
+                    <div className="space-y-3 short:space-y-1.5">
+                      <label className="font-display text-xl short:text-lg block">ASPECT RATIO</label>
                       <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
                         {['1:1', '4:3', '16:9'].map((ratio, idx) => (
                           <button
                             key={ratio}
                             onClick={() => setAspectRatio(ratio)}
                             disabled={isProcessing}
-                            className={`py-2 font-display text-lg transition-all ${aspectRatio === ratio
+                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${aspectRatio === ratio
                               ? 'bg-black text-white dark:bg-white dark:text-black'
                               : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
                               } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
@@ -499,15 +499,15 @@ function App() {
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="font-display text-xl block">MODE</label>
+                    <div className="space-y-3 short:space-y-1.5">
+                      <label className="font-display text-xl short:text-lg block">MODE</label>
                       <div className="grid grid-cols-2 gap-0 border border-black dark:border-white">
                         {['CONCEPT', 'DETAIL'].map((mode, idx) => (
                           <button
                             key={mode}
                             onClick={() => setVizMode(mode as 'CONCEPT' | 'DETAIL')}
                             disabled={isProcessing}
-                            className={`py-2 font-display text-lg transition-all ${vizMode === mode
+                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${vizMode === mode
                               ? 'bg-black text-white dark:bg-white dark:text-black'
                               : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
                               } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
@@ -518,8 +518,8 @@ function App() {
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="font-display text-xl block">STYLE</label>
+                    <div className="space-y-3 short:space-y-1.5">
+                      <label className="font-display text-xl short:text-lg block">STYLE</label>
                       <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
                         {['A', 'B', 'C', 'NONE'].map((style, idx) => (
                           <button
@@ -532,7 +532,7 @@ function App() {
                               }
                             }}
                             disabled={isProcessing}
-                            className={`py-2 font-display text-lg transition-all ${styleMode === style
+                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${styleMode === style
                               ? 'bg-black text-white dark:bg-white dark:text-black'
                               : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
                               } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
@@ -605,13 +605,13 @@ function App() {
               </>
             )}
 
-            <div className="mt-auto space-y-3 pt-4">
+            <div className="mt-auto space-y-3 short:space-y-1.5 pt-4 short:pt-2">
               {activeTab === 'create' ? (
                 <div className="border border-black dark:border-white">
                   {viewingStyle ? (
                     <button
                       onClick={() => handleStyleSelect(viewingStyle)}
-                      className="w-full py-3 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                      className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                     >
                       <span className="pt-1">SELECT</span>
                     </button>
@@ -619,14 +619,14 @@ function App() {
                     isProcessing ? (
                       <button
                         onClick={handleCancel}
-                        className="w-full py-3 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[60] relative"
+                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[60] relative"
                       >
                         <span className="pt-1">CANCEL</span>
                       </button>
                     ) : (
                       <button
                         onClick={handleGenerate}
-                        className="w-full py-3 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                       >
                         <span className="pt-1">GENERATE</span>
                       </button>
