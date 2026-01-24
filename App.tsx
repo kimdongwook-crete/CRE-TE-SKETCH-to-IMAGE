@@ -645,7 +645,7 @@ function App() {
               )}
             </div>
 
-            <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 text-center flex justify-center">
+            <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 text-center flex justify-center pb-2 md:pb-0">
               <p className="font-mono text-[9px] opacity-40 tracking-widest whitespace-nowrap">
                 © CRETE CO.,LTD. 2026. ALL RIGHTS RESERVED.
               </p>
