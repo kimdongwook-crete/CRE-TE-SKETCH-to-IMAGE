@@ -361,7 +361,7 @@ function App() {
             />
           )}
 
-          <div className="relative bg-white dark:bg-black flex flex-col min-w-0 h-[45vh] md:h-auto md:flex-1">
+          <div className="relative bg-white dark:bg-black flex flex-col min-w-0 h-[30vh] md:h-auto md:flex-1">
             <div className="w-full h-full relative">
               {activeTab === 'create' && (
                 <CanvasBoard
