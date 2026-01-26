@@ -68,6 +68,36 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     return () => window.removeEventListener('resize', resizeCanvas);
   }, [backgroundImage]);
 
+  // Handle Paste Event
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const img = new Image();
+              img.onload = () => {
+                setBackgroundImage(img);
+                onImageChange(true);
+              };
+              img.src = event.target?.result as string;
+            };
+            reader.readAsDataURL(blob);
+          }
+          break; // Only take the first image
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, []); // Run once on mount
+
   useImperativeHandle(ref, () => ({
     exportImage: () => {
       const bgCanvas = bgCanvasRef.current;
@@ -343,45 +373,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
               <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} />
             </label>
 
-            {/* DESKTOP: CAPTURE (Screen Screenshot) */}
-            <button
-              onClick={async () => {
-                try {
-                  // Request screen capture
-                  const stream = await navigator.mediaDevices.getDisplayMedia({
-                    video: { displaySurface: "window" },
-                    audio: false
-                  });
 
-                  const track = stream.getVideoTracks()[0];
-                  // @ts-ignore
-                  const imageCapture = new ImageCapture(track);
-                  const bitmap = await imageCapture.grabFrame();
-
-                  track.stop();
-
-                  const canvas = document.createElement('canvas');
-                  canvas.width = bitmap.width;
-                  canvas.height = bitmap.height;
-                  const ctx = canvas.getContext('2d');
-                  if (ctx) {
-                    ctx.drawImage(bitmap, 0, 0);
-                    const img = new Image();
-                    img.onload = () => {
-                      setBackgroundImage(img);
-                      onImageChange(true);
-                    };
-                    img.src = canvas.toDataURL('image/png');
-                  }
-                } catch (err) {
-                  console.error("Screen capture cancelled or failed", err);
-                }
-              }}
-              className="hidden lg:flex p-2 hover:bg-gray-100 text-black items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer"
-            >
-              <Camera size={16} />
-              <span>CAPTURE</span>
-            </button>
 
             <input
               type="file"
