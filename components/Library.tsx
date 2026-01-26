@@ -13,11 +13,12 @@ const Library: React.FC<LibraryProps> = ({ items, onSelect, onDelete, onClose })
   return (
     <div className="absolute inset-0 z-[60] bg-bw-white dark:bg-bw-black flex flex-col">
       {/* Library Header - Removed border-b */}
-      <div className="h-16 flex items-center justify-between px-6 shrink-0">
-        <h2 className="font-display text-[1.65rem] tracking-wide pt-1">LIBRARY</h2>
+      {/* Library Header - Streamlined */}
+      <div className="flex items-center justify-between px-6 pt-6 shrink-0">
+        <h2 className="font-display text-xl tracking-wide">LIBRARY</h2>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors rounded-none"
+          className="hover:opacity-60 transition-opacity"
         >
           <X size={24} strokeWidth={1.5} />
         </button>
