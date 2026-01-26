@@ -427,7 +427,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         {/* Helper Text */}
         {!backgroundImage && !isDrawing && history.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-5">
-            <span className="font-display text-4xl text-gray-200 tracking-wider">SKETCH OR DROP</span>
+            <span className="font-display text-4xl text-gray-300 tracking-wider">SKETCH OR DROP</span>
           </div>
         )}
 
