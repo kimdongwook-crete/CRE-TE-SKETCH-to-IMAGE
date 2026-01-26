@@ -617,7 +617,7 @@ function App() {
                     isProcessing ? (
                       <button
                         onClick={handleCancel}
-                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[60] relative"
+                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[101] relative"
                       >
                         <span className="pt-1">CANCEL</span>
                       </button>
@@ -652,7 +652,7 @@ function App() {
 
           {/* Global Loading Overlay */}
           {isProcessing && (
-            <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-50 flex flex-col items-center justify-center">
+            <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-[100] flex flex-col items-center justify-center">
               {/* 5 Bouncing Dots */}
               <div className="flex gap-4 mb-8">
                 {[0, 1, 2, 3, 4].map((i) => (
