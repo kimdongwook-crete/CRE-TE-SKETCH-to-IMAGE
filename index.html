@@ -74,33 +74,6 @@
     body {
       transition: background-color 0.3s, color 0.3s;
     }
-
-    /* Force visible scrollbar for mobile/tablet */
-    .active-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      /* Slightly wider */
-      height: 6px;
-      -webkit-appearance: none;
-    }
-
-    .active-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.05);
-      /* Subtle track visibility */
-    }
-
-    .dark .active-scrollbar::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .active-scrollbar::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.3);
-      /* Clearer thumb */
-      border-radius: 3px;
-    }
-
-    .dark .active-scrollbar::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
   </style>
   <script type="importmap">
 {
