@@ -28,6 +28,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
 
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
   const [showCursor, setShowCursor] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Initialize and Resize Canvases
   useEffect(() => {
@@ -138,6 +139,35 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       if (previousState) {
         ctx.putImageData(previousState, 0, 0);
       }
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          setBackgroundImage(img);
+          onImageChange(true);
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -387,11 +417,24 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       }
 
       {/* Canvas Area with Layers */}
-      <div ref={containerRef} className="flex-1 bg-white relative touch-none overflow-hidden">
+      <div
+        ref={containerRef}
+        className="flex-1 bg-white relative touch-none overflow-hidden"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         {/* Helper Text */}
         {!backgroundImage && !isDrawing && history.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-5">
-            <span className="font-display text-4xl text-gray-200 tracking-wider">SKETCH OR UPLOAD</span>
+            <span className="font-display text-4xl text-gray-200 tracking-wider">SKETCH OR DROP</span>
+          </div>
+        )}
+
+        {/* Drag Overlay */}
+        {isDragging && (
+          <div className="absolute inset-0 bg-black/5 border-4 border-dashed border-gray-300 z-50 pointer-events-none flex items-center justify-center">
+            <span className="font-display text-4xl text-gray-400 tracking-wider">DROP IMAGE HERE</span>
           </div>
         )}
 
