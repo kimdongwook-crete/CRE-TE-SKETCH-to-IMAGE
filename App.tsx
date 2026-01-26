@@ -292,6 +292,7 @@ function App() {
   };
 
   const handleReset = () => {
+    setShowLibrary(false);
     setGeneratedImage(null);
     setOriginalImage(null);
     setAnalysisReport(null); // Reset report
