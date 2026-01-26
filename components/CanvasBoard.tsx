@@ -424,17 +424,10 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        {/* Helper Text */}
-        {!backgroundImage && !isDrawing && history.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <span className="font-display text-4xl text-gray-200 tracking-wider">SKETCH OR DROP</span>
-          </div>
-        )}
-
-        {/* Drag Overlay */}
+        {/* Drag Overlay - Text Removed, Lighter Background */}
         {isDragging && (
-          <div className="absolute inset-0 bg-black/5 border-4 border-dashed border-gray-300 z-50 pointer-events-none flex items-center justify-center">
-            <span className="font-display text-4xl text-gray-400 tracking-wider">DROP IMAGE HERE</span>
+          <div className="absolute inset-0 bg-black/2 border-4 border-dashed border-gray-100/50 z-50 pointer-events-none flex items-center justify-center">
+            {/* Minimal visual feedback only */}
           </div>
         )}
 
