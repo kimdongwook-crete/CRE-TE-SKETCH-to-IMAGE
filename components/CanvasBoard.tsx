@@ -321,36 +321,81 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         </button>
       </div>
 
+
+
       {/* Upload Buttons - z-30 to ensure clickability above canvas */}
-      {!backgroundImage && (
-        <div className="absolute top-4 right-4 z-30 flex gap-0 border border-black bg-white shadow-none">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide"
-          >
-            <ImageIcon size={16} />
-            <span>UPLOAD</span>
-          </button>
-          <div className="w-px bg-black h-full"></div>
-          <label className="p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer">
-            <Camera size={16} />
-            <span className="lg:hidden">SNAP</span>
-            <span className="hidden lg:inline">CAPTURE</span>
-            <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} />
-          </label>
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-        </div>
-      )}
+      {
+        !backgroundImage && (
+          <div className="absolute top-4 right-4 z-30 flex gap-0 border border-black bg-white shadow-none">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide"
+            >
+              <ImageIcon size={16} />
+              <span>UPLOAD</span>
+            </button>
+            <div className="w-px bg-black h-full"></div>
+
+            {/* MOBILE/TABLET: CAMERA (Direct Camera Access) */}
+            <label className="lg:hidden p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer">
+              <Camera size={16} />
+              <span>CAMERA</span>
+              <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} />
+            </label>
+
+            {/* DESKTOP: CAPTURE (Screen Screenshot) */}
+            <button
+              onClick={async () => {
+                try {
+                  // Request screen capture
+                  const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { displaySurface: "window" },
+                    audio: false
+                  });
+
+                  const track = stream.getVideoTracks()[0];
+                  // @ts-ignore
+                  const imageCapture = new ImageCapture(track);
+                  const bitmap = await imageCapture.grabFrame();
+
+                  track.stop();
+
+                  const canvas = document.createElement('canvas');
+                  canvas.width = bitmap.width;
+                  canvas.height = bitmap.height;
+                  const ctx = canvas.getContext('2d');
+                  if (ctx) {
+                    ctx.drawImage(bitmap, 0, 0);
+                    const img = new Image();
+                    img.onload = () => {
+                      setBackgroundImage(img);
+                      onImageChange(true);
+                    };
+                    img.src = canvas.toDataURL('image/png');
+                  }
+                } catch (err) {
+                  console.error("Screen capture cancelled or failed", err);
+                }
+              }}
+              className="hidden lg:flex p-2 hover:bg-gray-100 text-black items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer"
+            >
+              <Camera size={16} />
+              <span>CAPTURE</span>
+            </button>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+          </div>
+        )
+      }
 
       {/* Canvas Area with Layers */}
       <div ref={containerRef} className="flex-1 bg-white relative touch-none overflow-hidden">
-
         {/* Helper Text */}
         {!backgroundImage && !isDrawing && history.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-5">
@@ -359,19 +404,21 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         )}
 
         {/* Custom Eraser Cursor */}
-        {tool === 'eraser' && showCursor && (
-          <div
-            className="pointer-events-none absolute border border-gray-500 rounded-full z-50 transform -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: cursorPos.x,
-              top: cursorPos.y,
-              width: eraserSize,
-              height: eraserSize,
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              borderColor: 'black'
-            }}
-          />
-        )}
+        {
+          tool === 'eraser' && showCursor && (
+            <div
+              className="pointer-events-none absolute border border-gray-500 rounded-full z-50 transform -translate-x-1/2 -translate-y-1/2"
+              style={{
+                left: cursorPos.x,
+                top: cursorPos.y,
+                width: eraserSize,
+                height: eraserSize,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                borderColor: 'black'
+              }}
+            />
+          )
+        }
 
         {/* Layer 0: Background (Image/White) */}
         <canvas
@@ -395,8 +442,8 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
             cursor: tool === 'pen' ? penCursor : (tool === 'eraser' ? 'none' : 'auto')
           }}
         />
-      </div>
-    </div>
+      </div >
+    </div >
   );
 });
 
