@@ -334,7 +334,8 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
           <div className="w-px bg-black h-full"></div>
           <label className="p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer">
             <Camera size={16} />
-            <span>SNAP</span>
+            <span className="lg:hidden">SNAP</span>
+            <span className="hidden lg:inline">CAPTURE</span>
             <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} />
           </label>
           <input
