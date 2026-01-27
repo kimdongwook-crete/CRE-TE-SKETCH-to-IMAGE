@@ -26,13 +26,7 @@ async function listModels() {
 
         // Since I effectively want to check if gemini-2.0-pro-exp exists:
         const modelsToCheck = [
-            'gemini-2.0-flash-exp',
-            'gemini-2.0-pro-exp-02-05',
-            'gemini-2.0-pro-exp',
-            'gemini-1.5-pro',
-            'gemini-1.5-flash',
-            'gemini-pro',
-            'gemini-2.0-flash'
+            'gemini-2.5-flash-image'
         ];
 
         for (const modelName of modelsToCheck) {

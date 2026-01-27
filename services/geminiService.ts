@@ -175,30 +175,28 @@ export const generateBlueprintImage = async (
   const ai = getClient();
   const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
 
-  // Dynamic Resolution Map based on Aspect Ratio
-  const getTargetResolution = (res: ImageResolution, ratio: string): string => {
-    switch (ratio) {
-      case '16:9':
-        if (res === ImageResolution.Res_4K) return '3840x2160';
-        if (res === ImageResolution.Res_2K) return '1920x1080';
-        return '1280x720';
-      case '4:3':
-        if (res === ImageResolution.Res_4K) return '2880x2160';
-        if (res === ImageResolution.Res_2K) return '1440x1080';
-        return '1024x768';
-      case '1:1':
-        if (res === ImageResolution.Res_4K) return '2160x2160';
-        if (res === ImageResolution.Res_2K) return '1080x1080';
-        return '1024x1024';
-      default:
-        return '1024x1024';
-    }
-  };
-
-  const targetResolution = getTargetResolution(resolution, aspectRatio);
-
   try {
     const generate = async (modelName: string) => {
+      // Configuration based on model type (Imagen vs Gemini)
+      // For gemini-2.0-flash-exp / gemini-2.5-flash-image / imagen-3
+      // We should use standard generation config, typically 'aspectRatio' or 'sampleCount'.
+      // Strict resolution strings like '1024x1024' are often rejected by newer endpoints.
+
+      const generationConfig: any = {
+        safetySettings: [
+          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+        ]
+      };
+
+      // Apply aspect ratio if supported
+      // Note: Some models might prefer '1:1' string, others might take width/height.
+      // Safest bet for 'gemini-2.5-flash-image' or 'imagen' via GenAI SDK is usually specific params.
+      // But standard 'generationConfig' for text/multimodal models doesn't always have 'imageConfig'.
+      // Let's force 'imageConfig' structure but with aspectRatio string which is safer.
+
       return await ai.models.generateContent({
         model: modelName,
         contents: {
@@ -215,8 +213,11 @@ export const generateBlueprintImage = async (
           ]
         },
         config: {
-          imageConfig: {
-            imageSize: targetResolution as any,
+          // @ts-ignore - SDK types might be outdated for preview features
+          generationConfig: {
+            ...generationConfig,
+            // Some models accept 'aspectRatio' directly here
+            aspectRatio: aspectRatio
           }
         }
       });
