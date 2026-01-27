@@ -4,9 +4,9 @@ import { ImageResolution } from "../types";
 
 // Helper to get client with current key
 const getClient = () => {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error("API Key is missing. Please set NEXT_PUBLIC_GOOGLE_API_KEY in your environment variables (or .env.local for local development).");
+    throw new Error("API Key is missing. Please set VITE_GEMINI_API_KEY in your environment variables (or .env.local for local development).");
   }
   return new GoogleGenAI({ apiKey });
 };

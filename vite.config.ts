@@ -10,9 +10,6 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
     },
     plugins: [react()],
-    define: {
-      'process.env.NEXT_PUBLIC_GOOGLE_API_KEY': JSON.stringify(env.NEXT_PUBLIC_GOOGLE_API_KEY),
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

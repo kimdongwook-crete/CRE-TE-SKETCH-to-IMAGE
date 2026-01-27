@@ -8,7 +8,10 @@ let apiKey = '';
 
 try {
     const envContent = fs.readFileSync(envPath, 'utf8');
-    const match = envContent.match(/NEXT_PUBLIC_GOOGLE_API_KEY=(.*)/);
+    let match = envContent.match(/VITE_GEMINI_API_KEY=(.*)/);
+    if (!match) {
+        match = envContent.match(/NEXT_PUBLIC_GOOGLE_API_KEY=(.*)/);
+    }
     if (match && match[1]) {
         apiKey = match[1].trim().replace(/["']/g, '');
     }
