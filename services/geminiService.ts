@@ -154,14 +154,9 @@ export const analyzeSketch = async (
       // Primary Attempt
       response = await withTimeout(generate(MODEL_ANALYSIS), TIMEOUT_DURATION);
     } catch (error: any) {
-      const isOverloaded = error.message?.includes('503') || error.message?.includes('overloaded');
-      if (error.message === "TIMEOUT" || isOverloaded) {
-        console.warn(`Analysis failed (Timeout/Overloaded). Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
-        // Fallback Attempt
-        response = await generate(MODEL_ANALYSIS_FALLBACK);
-      } else {
-        throw error;
-      }
+      console.warn(`Analysis failed (Error: ${error.message}). Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
+      // Fallback Attempt
+      response = await generate(MODEL_ANALYSIS_FALLBACK);
     }
 
     return response.text || "A hyper-realistic architectural photograph of a modern building based on the provided sketch.";
@@ -232,14 +227,9 @@ export const generateBlueprintImage = async (
       // Primary Attempt
       response = await withTimeout(generate(MODEL_IMAGE_GEN), TIMEOUT_DURATION);
     } catch (error: any) {
-      const isOverloaded = error.message?.includes('503') || error.message?.includes('overloaded');
-      if (error.message === "TIMEOUT" || isOverloaded) {
-        console.warn(`Image generation failed (Timeout/Overloaded). Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
-        // Fallback Attempt
-        response = await generate(MODEL_IMAGE_GEN_FALLBACK);
-      } else {
-        throw error;
-      }
+      console.warn(`Image generation failed (Error: ${error.message}). Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
+      // Fallback Attempt
+      response = await generate(MODEL_IMAGE_GEN_FALLBACK);
     }
 
     const parts = response.candidates?.[0]?.content?.parts;
