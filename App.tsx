@@ -383,7 +383,7 @@ function App() {
               )}
             </div>
           </div>
-          <div className="w-full landscape:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[51] overflow-y-auto border-t landscape:border-t-0 landscape:border-l border-black/10 dark:border-white/10 relative flex-1 landscape:flex-none landscape:h-full">
+          <div className="w-full landscape:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[200] overflow-y-auto border-t landscape:border-t-0 landscape:border-l border-black/10 dark:border-white/10 relative flex-1 landscape:flex-none landscape:h-full">
             {isProcessing && (
               <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
             )}
@@ -623,7 +623,7 @@ function App() {
                     isProcessing ? (
                       <button
                         onClick={handleCancel}
-                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[101] relative"
+                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[201] relative"
                       >
                         <span className="pt-1">CANCEL</span>
                       </button>
