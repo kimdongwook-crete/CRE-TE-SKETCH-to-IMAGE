@@ -383,278 +383,280 @@ function App() {
               )}
             </div>
           </div>
-          <div className="w-full landscape:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[200] overflow-y-auto border-t landscape:border-t-0 landscape:border-l border-black/10 dark:border-white/10 relative flex-1 landscape:flex-none landscape:h-full">
-            {isProcessing && (
-              <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
-            )}
+          {!showLibrary && (
+            <div className="w-full landscape:w-[320px] bg-bw-white dark:bg-bw-black p-6 short:p-3 flex flex-col gap-5 short:gap-3 z-[200] overflow-y-auto border-t landscape:border-t-0 landscape:border-l border-black/10 dark:border-white/10 relative flex-1 landscape:flex-none landscape:h-full">
+              {isProcessing && (
+                <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-40 pointer-events-none" />
+              )}
 
-            {/* Conditional Rendering based on Tab */}
-            {activeTab === 'create' ? (
-              <div className="flex flex-col gap-5 short:gap-3 h-full">
-                {/*
+              {/* Conditional Rendering based on Tab */}
+              {activeTab === 'create' ? (
+                <div className="flex flex-col gap-5 short:gap-3 h-full">
+                  {/*
                     CONTENT AREA
                     Swaps between Main Form and Style View
                 */}
-                {viewingStyle ? (
-                  /* STYLE VIEW CONTENT */
-                  <>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <label className="font-display text-xl block">STYLE LIST</label>
-                        <button
-                          onClick={() => setViewingStyle(null)}
-                          className="hover:opacity-60 transition-opacity"
-                        >
-                          <X size={24} />
-                        </button>
-                      </div>
-                      <div className="w-full flex-1 px-0 py-0 font-mono text-[10px] leading-relaxed bg-transparent border-0 focus:outline-none resize-none overflow-y-auto custom-scrollbar min-h-0">
-                        {viewingStyle && STYLE_DEFINITIONS[viewingStyle] && (
-                          <div className="space-y-4">
-                            <div>
-                              <p className="font-bold text-xs mb-1 text-black dark:text-white uppercase">
-                                {STYLE_DEFINITIONS[viewingStyle].title}
-                              </p>
-                              <p className="italic opacity-90">{STYLE_DEFINITIONS[viewingStyle].description}</p>
-                            </div>
-
-                            <div>
-                              <p className="font-bold opacity-70 mb-0.5">• Design Philosophy:</p>
-                              <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].philosophy}</p>
-                            </div>
-
-                            <div>
-                              <p className="font-bold opacity-70 mb-0.5">• Key Reference:</p>
-                              <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].references}</p>
-                            </div>
-
-                            <div>
-                              <p className="font-bold opacity-70 mb-0.5">• Material Palette (POSI-GAP):</p>
-                              <ul className="list-disc pl-4 space-y-0.5 opacity-80">
-                                {STYLE_DEFINITIONS[viewingStyle].palette.map((item, i) => (
-                                  <li key={i}>{item}</li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            <div>
-                              <p className="font-bold opacity-70 mb-0.5">• Optical Atmosphere:</p>
-                              <ul className="list-disc pl-4 space-y-0.5 opacity-80">
-                                {STYLE_DEFINITIONS[viewingStyle].atmosphere.map((item, i) => (
-                                  <li key={i}>{item}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  /* MAIN FORM CONTENT */
-                  <>
-                    <div className="space-y-3 short:space-y-1.5">
-                      <label className="font-display text-xl short:text-lg block">CODE</label>
-                      <textarea
-                        className="w-full h-24 short:h-20 p-3 short:p-2 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400 rounded-none"
-                        placeholder="Describe materials, lighting..."
-                        value={userPrompt}
-                        onChange={(e) => setUserPrompt(e.target.value)}
-                        disabled={isProcessing}
-                      />
-                    </div>
-
-                    <div className="space-y-3 short:space-y-1.5">
-                      <label className="font-display text-xl short:text-lg block">RESOLUTION</label>
-                      <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
-                        {Object.values(ImageResolution).map((res, idx) => (
-                          <button
-                            key={res}
-                            onClick={() => setResolution(res)}
-                            disabled={isProcessing}
-                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${resolution === res
-                              ? 'bg-black text-white dark:bg-white dark:text-black'
-                              : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
-                              } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
-                          >
-                            {res}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 short:space-y-1.5">
-                      <label className="font-display text-xl short:text-lg block">ASPECT RATIO</label>
-                      <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
-                        {['1:1', '4:3', '16:9'].map((ratio, idx) => (
-                          <button
-                            key={ratio}
-                            onClick={() => setAspectRatio(ratio)}
-                            disabled={isProcessing}
-                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${aspectRatio === ratio
-                              ? 'bg-black text-white dark:bg-white dark:text-black'
-                              : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
-                              } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
-                          >
-                            {ratio}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 short:space-y-1.5">
-                      <label className="font-display text-xl short:text-lg block">MODE</label>
-                      <div className="grid grid-cols-2 gap-0 border border-black dark:border-white">
-                        {['CONCEPT', 'DETAIL'].map((mode, idx) => (
-                          <button
-                            key={mode}
-                            onClick={() => setVizMode(mode as 'CONCEPT' | 'DETAIL')}
-                            disabled={isProcessing}
-                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${vizMode === mode
-                              ? 'bg-black text-white dark:bg-white dark:text-black'
-                              : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
-                              } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
-                          >
-                            {mode}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 short:space-y-1.5">
-                      <label className="font-display text-xl short:text-lg block">STYLE</label>
-                      <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
-                        {['A', 'B', 'C', 'NONE'].map((style, idx) => (
-                          <button
-                            key={style}
-                            onClick={() => {
-                              if (style === 'NONE') {
-                                setStyleMode('NONE');
-                              } else {
-                                setViewingStyle(style as 'A' | 'B' | 'C');
-                              }
-                            }}
-                            disabled={isProcessing}
-                            className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${styleMode === style
-                              ? 'bg-black text-white dark:bg-white dark:text-black'
-                              : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
-                              } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
-                          >
-                            {style}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-
-
-
-              </div>
-            ) : (
-              /* Result View - Analysis Report Sidebar */
-              <>
-                {analysisReport ? (
-                  <>
-                    {/* LOGIC & ANALYSIS */}
-                    <div className="space-y-3 flex-1 flex flex-col min-h-0">
-                      <div className="flex items-center justify-between">
-                        <label className="font-display text-xl block">LOGIC & ANALYSIS</label>
-                        <button
-                          onClick={() => setShowLibrary(true)}
-                          className="hover:opacity-60 transition-opacity"
-                        >
-                          <X size={24} strokeWidth={1.5} />
-                        </button>
-                      </div>
-                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
-                        <p className="font-bold">▪ Metacognitive Analysis</p>
-                        <p className="opacity-80">{analysisReport.metacognitive.diagnosis}</p>
-                        <p className="opacity-60 text-[10px]">{analysisReport.metacognitive.reasoning}</p>
-                        <p className="font-bold mt-2">▪ Spatial & Logic Decoding</p>
-                        <p className="opacity-80">Geometry: {analysisReport.spatial.geometry}</p>
-                        <p className="opacity-80">Material: {analysisReport.spatial.materiality}</p>
-                      </div>
-                    </div>
-
-                    {/* VERIFICATION & OPTIONS */}
-                    {/* VERIFICATION & OPTIONS */}
-                    <div className="space-y-3 flex-1 flex flex-col min-h-0">
-                      <label className="font-display text-xl block">VERIFICATION & OPTIONS</label>
-                      <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
-                        <p className="font-bold">▪ Iterative Refinement</p>
-                        <ul className="list-disc pl-3 opacity-80">
-                          <li>{analysisReport.refinement.optionA}</li>
-                          <li>{analysisReport.refinement.optionB}</li>
-                        </ul>
-                        <p className="font-bold mt-2">▪ Reality Check</p>
-                        <p className="opacity-80">{analysisReport.verification.imperfection}</p>
-                      </div>
-                    </div>
-
-                    {/* EXECUTION CODE */}
-                    <div className="space-y-3 flex-1 flex flex-col min-h-0">
-                      <label className="font-display text-xl block">EXECUTION CODE</label>
-                      <div className="border border-black dark:border-white p-3 font-mono text-[10px] overflow-y-auto flex-1 whitespace-pre-wrap">
-                        {analysisReport.execution.prompt}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex-1 flex items-center justify-center opacity-50 font-mono text-xs">
-                    No analysis report available.
-                  </div>
-                )}
-              </>
-            )}
-
-            <div className="mt-auto space-y-3 short:space-y-1.5 pt-4 short:pt-2">
-              {activeTab === 'create' ? (
-                <div className="border border-black dark:border-white">
                   {viewingStyle ? (
-                    <button
-                      onClick={() => handleStyleSelect(viewingStyle)}
-                      className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-                    >
-                      <span className="pt-1">SELECT</span>
-                    </button>
+                    /* STYLE VIEW CONTENT */
+                    <>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="font-display text-xl block">STYLE LIST</label>
+                          <button
+                            onClick={() => setViewingStyle(null)}
+                            className="hover:opacity-60 transition-opacity"
+                          >
+                            <X size={24} />
+                          </button>
+                        </div>
+                        <div className="w-full flex-1 px-0 py-0 font-mono text-[10px] leading-relaxed bg-transparent border-0 focus:outline-none resize-none overflow-y-auto custom-scrollbar min-h-0">
+                          {viewingStyle && STYLE_DEFINITIONS[viewingStyle] && (
+                            <div className="space-y-4">
+                              <div>
+                                <p className="font-bold text-xs mb-1 text-black dark:text-white uppercase">
+                                  {STYLE_DEFINITIONS[viewingStyle].title}
+                                </p>
+                                <p className="italic opacity-90">{STYLE_DEFINITIONS[viewingStyle].description}</p>
+                              </div>
+
+                              <div>
+                                <p className="font-bold opacity-70 mb-0.5">• Design Philosophy:</p>
+                                <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].philosophy}</p>
+                              </div>
+
+                              <div>
+                                <p className="font-bold opacity-70 mb-0.5">• Key Reference:</p>
+                                <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].references}</p>
+                              </div>
+
+                              <div>
+                                <p className="font-bold opacity-70 mb-0.5">• Material Palette (POSI-GAP):</p>
+                                <ul className="list-disc pl-4 space-y-0.5 opacity-80">
+                                  {STYLE_DEFINITIONS[viewingStyle].palette.map((item, i) => (
+                                    <li key={i}>{item}</li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div>
+                                <p className="font-bold opacity-70 mb-0.5">• Optical Atmosphere:</p>
+                                <ul className="list-disc pl-4 space-y-0.5 opacity-80">
+                                  {STYLE_DEFINITIONS[viewingStyle].atmosphere.map((item, i) => (
+                                    <li key={i}>{item}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
                   ) : (
-                    isProcessing ? (
-                      <button
-                        onClick={handleCancel}
-                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[201] relative"
-                      >
-                        <span className="pt-1">CANCEL</span>
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleGenerate}
-                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-                      >
-                        <span className="pt-1">GENERATE</span>
-                      </button>
-                    )
+                    /* MAIN FORM CONTENT */
+                    <>
+                      <div className="space-y-3 short:space-y-1.5">
+                        <label className="font-display text-xl short:text-lg block">CODE</label>
+                        <textarea
+                          className="w-full h-24 short:h-20 p-3 short:p-2 font-mono text-xs bg-transparent border border-black dark:border-white focus:outline-none resize-none placeholder-gray-400 rounded-none"
+                          placeholder="Describe materials, lighting..."
+                          value={userPrompt}
+                          onChange={(e) => setUserPrompt(e.target.value)}
+                          disabled={isProcessing}
+                        />
+                      </div>
+
+                      <div className="space-y-3 short:space-y-1.5">
+                        <label className="font-display text-xl short:text-lg block">RESOLUTION</label>
+                        <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
+                          {Object.values(ImageResolution).map((res, idx) => (
+                            <button
+                              key={res}
+                              onClick={() => setResolution(res)}
+                              disabled={isProcessing}
+                              className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${resolution === res
+                                ? 'bg-black text-white dark:bg-white dark:text-black'
+                                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
+                                } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
+                            >
+                              {res}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 short:space-y-1.5">
+                        <label className="font-display text-xl short:text-lg block">ASPECT RATIO</label>
+                        <div className="grid grid-cols-3 gap-0 border border-black dark:border-white">
+                          {['1:1', '4:3', '16:9'].map((ratio, idx) => (
+                            <button
+                              key={ratio}
+                              onClick={() => setAspectRatio(ratio)}
+                              disabled={isProcessing}
+                              className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${aspectRatio === ratio
+                                ? 'bg-black text-white dark:bg-white dark:text-black'
+                                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
+                                } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
+                            >
+                              {ratio}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 short:space-y-1.5">
+                        <label className="font-display text-xl short:text-lg block">MODE</label>
+                        <div className="grid grid-cols-2 gap-0 border border-black dark:border-white">
+                          {['CONCEPT', 'DETAIL'].map((mode, idx) => (
+                            <button
+                              key={mode}
+                              onClick={() => setVizMode(mode as 'CONCEPT' | 'DETAIL')}
+                              disabled={isProcessing}
+                              className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${vizMode === mode
+                                ? 'bg-black text-white dark:bg-white dark:text-black'
+                                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
+                                } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
+                            >
+                              {mode}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 short:space-y-1.5">
+                        <label className="font-display text-xl short:text-lg block">STYLE</label>
+                        <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
+                          {['A', 'B', 'C', 'NONE'].map((style, idx) => (
+                            <button
+                              key={style}
+                              onClick={() => {
+                                if (style === 'NONE') {
+                                  setStyleMode('NONE');
+                                } else {
+                                  setViewingStyle(style as 'A' | 'B' | 'C');
+                                }
+                              }}
+                              disabled={isProcessing}
+                              className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${styleMode === style
+                                ? 'bg-black text-white dark:bg-white dark:text-black'
+                                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
+                                } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
+                            >
+                              {style}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </>
                   )}
+
+
+
+
                 </div>
               ) : (
-                <div className="border border-black dark:border-white">
-                  <button
-                    onClick={handleDownload}
-                    className="w-full py-2 font-display text-lg tracking-widest bg-black text-white dark:bg-white dark:text-black flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
-                  >
-                    <span className="pt-1">DOWNLOAD</span>
-                  </button>
-                </div>
-              )}
-            </div>
+                /* Result View - Analysis Report Sidebar */
+                <>
+                  {analysisReport ? (
+                    <>
+                      {/* LOGIC & ANALYSIS */}
+                      <div className="space-y-3 flex-1 flex flex-col min-h-0">
+                        <div className="flex items-center justify-between">
+                          <label className="font-display text-xl block">LOGIC & ANALYSIS</label>
+                          <button
+                            onClick={() => setShowLibrary(true)}
+                            className="hover:opacity-60 transition-opacity"
+                          >
+                            <X size={24} strokeWidth={1.5} />
+                          </button>
+                        </div>
+                        <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
+                          <p className="font-bold">▪ Metacognitive Analysis</p>
+                          <p className="opacity-80">{analysisReport.metacognitive.diagnosis}</p>
+                          <p className="opacity-60 text-[10px]">{analysisReport.metacognitive.reasoning}</p>
+                          <p className="font-bold mt-2">▪ Spatial & Logic Decoding</p>
+                          <p className="opacity-80">Geometry: {analysisReport.spatial.geometry}</p>
+                          <p className="opacity-80">Material: {analysisReport.spatial.materiality}</p>
+                        </div>
+                      </div>
 
-            <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 text-center flex justify-center">
-              <p className="font-mono text-[9px] opacity-40 tracking-widest whitespace-nowrap">
-                © CRETE CO.,LTD. 2026. ALL RIGHTS RESERVED.
-              </p>
+                      {/* VERIFICATION & OPTIONS */}
+                      {/* VERIFICATION & OPTIONS */}
+                      <div className="space-y-3 flex-1 flex flex-col min-h-0">
+                        <label className="font-display text-xl block">VERIFICATION & OPTIONS</label>
+                        <div className="border border-black dark:border-white p-3 font-mono text-xs space-y-2 flex-1 overflow-y-auto">
+                          <p className="font-bold">▪ Iterative Refinement</p>
+                          <ul className="list-disc pl-3 opacity-80">
+                            <li>{analysisReport.refinement.optionA}</li>
+                            <li>{analysisReport.refinement.optionB}</li>
+                          </ul>
+                          <p className="font-bold mt-2">▪ Reality Check</p>
+                          <p className="opacity-80">{analysisReport.verification.imperfection}</p>
+                        </div>
+                      </div>
+
+                      {/* EXECUTION CODE */}
+                      <div className="space-y-3 flex-1 flex flex-col min-h-0">
+                        <label className="font-display text-xl block">EXECUTION CODE</label>
+                        <div className="border border-black dark:border-white p-3 font-mono text-[10px] overflow-y-auto flex-1 whitespace-pre-wrap">
+                          {analysisReport.execution.prompt}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center opacity-50 font-mono text-xs">
+                      No analysis report available.
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="mt-auto space-y-3 short:space-y-1.5 pt-4 short:pt-2">
+                {activeTab === 'create' ? (
+                  <div className="border border-black dark:border-white">
+                    {viewingStyle ? (
+                      <button
+                        onClick={() => handleStyleSelect(viewingStyle)}
+                        className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                      >
+                        <span className="pt-1">SELECT</span>
+                      </button>
+                    ) : (
+                      isProcessing ? (
+                        <button
+                          onClick={handleCancel}
+                          className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[201] relative"
+                        >
+                          <span className="pt-1">CANCEL</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleGenerate}
+                          className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                        >
+                          <span className="pt-1">GENERATE</span>
+                        </button>
+                      )
+                    )}
+                  </div>
+                ) : (
+                  <div className="border border-black dark:border-white">
+                    <button
+                      onClick={handleDownload}
+                      className="w-full py-2 font-display text-lg tracking-widest bg-black text-white dark:bg-white dark:text-black flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+                    >
+                      <span className="pt-1">DOWNLOAD</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 text-center flex justify-center">
+                <p className="font-mono text-[9px] opacity-40 tracking-widest whitespace-nowrap">
+                  © CRETE CO.,LTD. 2026. ALL RIGHTS RESERVED.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Global Loading Overlay */}
           {isProcessing && (
