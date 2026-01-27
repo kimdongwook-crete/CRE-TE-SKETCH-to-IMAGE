@@ -25,7 +25,7 @@ if (!apiKey) {
 console.log(`Testing API Key: ${apiKey.substring(0, 5)}...`);
 
 // 2. Test Call to Gemini API (gemini-3-pro-preview)
-const model = 'models/gemini-3-pro-preview';
+const model = 'models/gemini-1.5-flash';
 
 const data = JSON.stringify({
     contents: [{
