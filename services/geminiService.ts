@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, TIMEOUT_DURATION } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -355,7 +355,7 @@ Synthesize the architectural DNA from the following sources:
     let response;
     try {
       // Primary Attempt
-      response = await withTimeout(generate(MODEL_ANALYSIS), TIMEOUT_DURATION);
+      response = await withTimeout(generate(MODEL_ANALYSIS), TIMEOUT_ANALYSIS);
     } catch (error: any) {
       console.warn(`Analysis failed (Error: ${error.message}). Retrying with fallback model: ${MODEL_ANALYSIS_FALLBACK}`);
       // Fallback Attempt
@@ -429,7 +429,7 @@ export const generateBlueprintImage = async (
     let response;
     try {
       // Primary Attempt
-      response = await withTimeout(generate(MODEL_IMAGE_GEN), TIMEOUT_DURATION);
+      response = await withTimeout(generate(MODEL_IMAGE_GEN), TIMEOUT_IMAGE_GEN);
     } catch (error: any) {
       console.warn(`Image generation failed (Error: ${error.message}). Retrying with fallback model: ${MODEL_IMAGE_GEN_FALLBACK}`);
       // Fallback Attempt
@@ -458,11 +458,17 @@ export const generateBlueprintImage = async (
     // ---------------------------------------------------------
     try {
       console.log("Starting Step 3: Refinement with", MODEL_IMAGE_REFINE);
-      const refinedImage = await refineDraftImage(draftImage, prompt);
+      const refinedImage = await withTimeout(refineDraftImage(draftImage, prompt, MODEL_IMAGE_REFINE), TIMEOUT_REFINE);
       return refinedImage;
-    } catch (refineError) {
-      console.warn("Refinement failed, returning Draft Image instead.", refineError);
-      return draftImage; // Fallback to draft if refinement fails
+    } catch (refineError: any) {
+      console.warn(`Primary Refinement failed (${refineError.message}). Retrying with Fallback: ${MODEL_IMAGE_REFINE_FALLBACK}`);
+      try {
+        const fallbackRefinedImage = await withTimeout(refineDraftImage(draftImage, prompt, MODEL_IMAGE_REFINE_FALLBACK), TIMEOUT_REFINE);
+        return fallbackRefinedImage;
+      } catch (fallbackError) {
+        console.warn("Fallback Refinement also failed. Returning Draft Image.", fallbackError);
+        return draftImage; // Final Fallback
+      }
     }
 
   } catch (error) {
@@ -472,7 +478,7 @@ export const generateBlueprintImage = async (
 };
 
 // Internal Helper for Step 3
-const refineDraftImage = async (draftBase64: string, originalPrompt: string): Promise<string> => {
+const refineDraftImage = async (draftBase64: string, originalPrompt: string, modelName: string): Promise<string> => {
   const ai = getClient();
   const cleanDraft = draftBase64.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
 
@@ -494,7 +500,7 @@ const refineDraftImage = async (draftBase64: string, originalPrompt: string): Pr
   `;
 
   const response = await ai.models.generateContent({
-    model: MODEL_IMAGE_REFINE,
+    model: modelName,
     contents: {
       parts: [
         { text: refinePrompt },
