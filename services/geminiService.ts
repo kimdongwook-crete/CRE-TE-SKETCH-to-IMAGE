@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, TIMEOUT_DURATION } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, TIMEOUT_DURATION } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -443,16 +443,79 @@ export const generateBlueprintImage = async (
 
     if (!parts) throw new Error("No content generated");
 
+    let draftImage = "";
     for (const part of parts) {
       if (part.inlineData && part.inlineData.data) {
-        return `data:image/png;base64,${part.inlineData.data}`;
+        draftImage = `data:image/png;base64,${part.inlineData.data}`;
+        break;
       }
     }
 
-    throw new Error("No image data found in response");
+    if (!draftImage) throw new Error("No image data found in response");
+
+    // ---------------------------------------------------------
+    // STEP 3: REFINEMENT (High-Fidelity Post-Processing)
+    // ---------------------------------------------------------
+    try {
+      console.log("Starting Step 3: Refinement with", MODEL_IMAGE_REFINE);
+      const refinedImage = await refineDraftImage(draftImage, prompt);
+      return refinedImage;
+    } catch (refineError) {
+      console.warn("Refinement failed, returning Draft Image instead.", refineError);
+      return draftImage; // Fallback to draft if refinement fails
+    }
 
   } catch (error) {
     console.error("Generation Error:", error);
     throw new Error("Failed to generate visualization.");
   }
+};
+
+// Internal Helper for Step 3
+const refineDraftImage = async (draftBase64: string, originalPrompt: string): Promise<string> => {
+  const ai = getClient();
+  const cleanDraft = draftBase64.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+
+  const refinePrompt = `
+    [ROLE: Architectural Photographer & Post-Production Expert]
+    [TASK: Refine this architectural rendering into a hyper-realistic photograph]
+    
+    INPUT CONTEXT:
+    The attached image is a 'Draft Render'. It has the correct geometry and composition, but lacks photorealistic definition.
+    
+    STRICT CONSTRAINTS (DO NOT IGNORE):
+    1. **GEOMETRY LOCK:** You MUST strictly preserve the structural lines, perspective, and framing of the Input Image. Do not rotate, zoom, or distort.
+    2. **TEXTURE UPGRADE:** Replace the 'rendered' look with real-world textures (concrete, glass, wood, brick) based on the context.
+    3. **LIGHTING FIX:** Apply natural global illumination, ambient occlusion, and realistic reflections.
+    4. **NO HALLUCINATION:** Do not add new buildings or random objects not present in the draft.
+    
+    ORIGINAL DESIGN INTENT:
+    ${originalPrompt}
+  `;
+
+  const response = await ai.models.generateContent({
+    model: MODEL_IMAGE_REFINE,
+    contents: {
+      parts: [
+        { text: refinePrompt },
+        {
+          inlineData: {
+            mimeType: 'image/png',
+            data: cleanDraft
+          }
+        }
+      ]
+    }
+  });
+
+  const parts = response.candidates?.[0]?.content?.parts;
+  if (parts) {
+    for (const part of parts) {
+      if (part.inlineData && part.inlineData.data) {
+        return `data:image/png;base64,${part.inlineData.data}`;
+      }
+    }
+  }
+
+  throw new Error("Refinement returned no image data");
 };
