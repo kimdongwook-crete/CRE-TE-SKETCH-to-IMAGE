@@ -391,7 +391,7 @@ function App() {
                             <X size={24} />
                           </button>
                         </div>
-                        <div className="w-full flex-1 px-0 py-0 font-mono text-[10px] leading-relaxed bg-transparent border-0 focus:outline-none resize-none overflow-y-auto custom-scrollbar min-h-0">
+                        <div className="w-full flex-1 px-0 py-0 font-mono text-xs leading-relaxed bg-transparent border-0 focus:outline-none resize-none overflow-y-auto custom-scrollbar min-h-0">
                           {viewingStyle && STYLE_DEFINITIONS[viewingStyle] && (
                             <div className="space-y-4">
                               <div>
@@ -406,7 +406,7 @@ function App() {
                                   {STYLE_DEFINITIONS[viewingStyle].stylePoints.map((point, i) => (
                                     <div key={i}>
                                       <p className="font-bold opacity-80 mb-0.5">* {point.title}</p>
-                                      <p className="opacity-80 pl-2">- {point.desc}</p>
+                                      <p className="opacity-80 pl-2">{point.desc}</p>
                                     </div>
                                   ))}
                                 </div>
