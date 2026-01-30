@@ -47,18 +47,217 @@ export const analyzeSketch = async (
               * **Priority 2 (Active):** No specific STYLE LIST selected. You MUST refer to general learning data (Web) for design vocabulary.`;
   } else {
     const definitions = {
-      A: `**STYLE LIST [A]: Silent Minimalism (침묵의 미니멀리즘)**
-          - Philosophy: 장식을 배제하고 기하학적 순수성을 강조. '형태'보다는 빛이 닿는 '면'의 질감에 집중.
-          - Materials: Exposed Aggregate Concrete, Vals Quartzite, Frameless Low-Iron Glass.
-          - Atmosphere: Soft Diffused Light, Overcast, Soft Shadows, Mass Emphasis.`,
-      B: `**STYLE LIST [B]: Organic Biophilia (유기적 바이오필리아)**
-          - Philosophy: 직선보다는 자연스러운 흐름, 차가운 금속보다는 숨 쉬는 나무와 흙의 물성 강조.
-          - Materials: Weathered Cedar Slats, CLT, Corten Steel, Ivy/Moss details.
-          - Atmosphere: Golden Hour, Dappled Light, 3500K Warmth, Patina.`,
-      C: `**STYLE LIST [C]: Raw Industrialism (로우 인더스트리얼)**
-          - Philosophy: 구조체(뼈대)를 숨기지 않고 드러냄. 세월의 흔적과 공업적 미학을 현대적으로 재해석.
-          - Materials: Reclaimed Red Brick, Dark Grey Clinker Brick, Blackened Steel I-Beams, Zinc Panels.
-          - Atmosphere: Volumetric Fog, God Rays, Blue Hour, Micro-roughness.`
+      A: `
+# David Chipperfield
+------------------------------------
+**활용:** User Sketch -> David Chipperfield Style Rendering
+**원칙:** Propositional Definition, Positive Absolute, Contextual Anchoring
+
+## 1. General Requirements
+### 1.1 Persona & Tone
+* **Role:** Architectural Material Specialist & Heritage Conservation Architect.
+* **Mood:** Silence, Timelessness, Solidity.
+
+### 1.2 Sketch Interpretation Logic
+* **Line Weight:** Thick lines = Structural columns or Wall thickness.
+* **Vertical Lines:** Simple verticals = Deep Fins or Colonnade.
+* **Blank Space:** White space = Solid Wall (Not void).
+
+## 2. Material & Finish Schedule (Force Apply)
+| Code | Location | Specification | Reference |
+| --- | --- | --- | --- |
+| **MAT-01** | **Main Facade** | **Pale Beige Brick** (Long format) | *Kolumba Brick (Petersen Tegl)* |
+| **MAT-02** | **Structure** | **Sandblasted Precast Concrete** | *James-Simon-Galerie Columns* |
+| **MAT-03** | **Accent** | **Terrazzo / Travertine** | *Neues Museum Staircase* |
+| **MAT-04** | **Glazing** | **Low-Iron Clear Glass** (No Tint) | *Amorepacific HQ Transparency* |
+
+## 3. Tectonics & Geometric Logic
+### 3.1 Grounding
+* **Constraint:** **NO PILOTIS.**
+* **Rule:** Building must sit heavily on the ground (Podium).
+
+### 3.2 Depth of Facade
+* **Rule:** Deep Set Recess (Windows recessed 450mm ~ 600mm).
+* **Effect:** Reveal physical thickness. Eliminate "lightness".
+
+### 3.3 Rhythm & Repetition
+* **Rule:** Strict Equidistance for vertical elements. Correct irregular lines to Classical Proportion.
+
+## 4. Lighting & Environment
+* **Type:** **Diffuse Overcast Light**.
+* **Shadow:** Soft, highlighting texture.
+* **Sky:** Desaturated Grey Sky. No blue.
+
+## 5. Winning Strategy Prompt (Master Prompt)
+\`\`\`
+# Role & Context
+Act as a world-class architectural visualization expert specializing in David Chipperfield's work. 
+Convert the input sketch into a photorealistic rendering by strictly adhering to the following "David Chipperfield Style Specification". 
+
+# 1. Reference Logic (Masterpiece Mapping)
+Synthesize the architectural DNA from the following sources:
+* ** Facade Rhythm**: Interpret vertical sketch lines as the deep-set aluminum/concrete fins of **[Amorepacific HQ]**. 
+* **Materiality**: Apply the texture of 'Pale Beige Bricks' and 'Precast Concrete' from **[Neues Museum]**. 
+* **Grounding**: Ensure the mass sits heavily on the ground like the **[James-Simon-Galerie]**. 
+
+# 2. Propositional Constraints (Must-Haves)
+* **The Facade IS:** A rhythmic composition of vertical columns with a depth of 60cm. 
+* **The Material IS:** Matte, non-reflective, and textured (Sandblasted). 
+* **The Structure IS:** Monolithic and heavy. DO NOT create floating masses or pilotis. 
+* **The Color Palette IS:** Desaturated Earth Tones (Stone Grey, Cream, Travertine Beige). 
+
+# 3. Technical Specifications
+* **Lighting: Soft overcast ambient light to highlight material texture. No harsh shadows. 
+* **Quality: 8k, Photorealistic, Architectural Photography. 
+
+# Instruction for Sketch processing
+* Treat rough outlines as solid, heavy masonry walls. 
+* Correct any perspective errors in the sketch to align with a strict orthogonal grid.
+\`\`\`
+`,
+      B: `
+# Richard Meier
+------------------------------------
+**활용:** User Sketch -> Richard Meier Style Rendering
+**원칙:** Geometric Propositions, Absolute Whiteness, Optical Control
+
+## 1. General Requirements
+### 1.1 Persona & Tone
+* **Role:** Geometric Purist & Master of Light.
+* **Mood:** Clarity, Purity, Rationality.
+
+### 1.2 Sketch Interpretation Logic
+* **Grid Logic:** All lines snap to invisible 1m grid. Correct to Orthogonal.
+* **Curve Interpretation:** Curves are "Free-form Walls", independent of grid.
+* **Volume:** Collection of Planes (Skin), not solid mass.
+
+## 2. Material & Finish Schedule
+Force Color: #FFFFFF
+| Code | Location | Specification | Reference |
+| --- | --- | --- | --- |
+| **MAT-01** | **Exterior Skin** | **White Porcelain Enameled Panel** | *MACBA Facade (1m x 1m Grid)* |
+| **MAT-02** | **Glazing** | **Clear Float Glass** (No Tint/Reflectivity) | *Douglas House Windows* |
+| **MAT-03** | **Structure** | **White Painted Steel / Concrete** | *Getty Center Columns* |
+| **MAT-04** | **Circulation** | **White Stucco / Plaster** | *High Museum Ramp* |
+
+## 3. Tectonics & Geometric Logic
+### 3.1 Relationship with Site
+* **Rule:** **Lifted Volume.**
+* **Constraint:** Must use **Cylindrical Pilotis** or Podium. Distinct from ground.
+
+### 3.2 Facade Syntax
+* **Rule:** **Layering.**
+* **Description:** [Structure] - [Glass] - [Brise-soleil]. Deep layering.
+* **Detail:** Black joints visible on white panels.
+
+### 3.3 Transparency
+* **Rule:** Physical Transparency. Glass = Void. Reveal interior ramps/stairs.
+
+## 4. Lighting & Environment
+* **Type:** **Hard Direct Sunlight**.
+* **Shadow:** **Chiaroscuro.** Sharp, geometric shadows.
+* **Sky:** **Deep Azure Blue.** Clear sky for maximum contrast.
+
+## 5. Winning Strategy Prompt (Master Prompt)
+\`\`\`
+# Role & Context
+Act as a strict Architectural Geometry Specialist following Richard Meier's design principles. 
+Convert the input sketch into a pristine, white architectural visualization. 
+
+# 1. Reference Logic (Masterpiece Mapping)
+Synthesize the architectural DNA from the following sources:
+* **Grid System**: Apply the 1m x 1m enamel panel grid from **[MACBA]** to all solid surfaces. 
+* **Massing**: Interpret the volume as a layered composition like **[The Douglas House]**, lifted from the ground. 
+* **Circulation**: If a ramp or stair is visible, render it as a projecting element like in **[The High Museum of Art]**. 
+
+# 2. Propositional Constraints (Must-Haves)
+* **The Color IS**: Absolute White (#FFFFFF). No beige, no grey, no warm tones. 
+* **The Material IS**: Glossy Porcelain Enameled Panels with visible black joints. 
+* **The Structure IS**: Supported by white cylindrical pilotis. 
+* **The Geometry IS**: A strict interplay of rectilinear grids and free-form curves. 
+
+# 3. Technical Specifications
+* **Lighting**: High-contrast daylight. Hard shadows cast by screen walls and mullions. 
+* **Sky**: Clear, deep blue sky to maximize contrast with the white building. 
+* **Quality**: 8k, Photorealistic, Sharp Focus. 
+
+# Instruction for Sketch processing
+* Straighten all hand-drawn lines to a perfect orthogonal grid. 
+* Interpret any hatching in the sketch as a 'Brise-soleil' (Sun breaker) grid. 
+* Treat empty spaces between lines as clear glass revealing the interior.
+\`\`\`
+`,
+      C: `
+# Kengo Kuma
+------------------------------------
+**활용:** User Sketch -> Kengo Kuma Style Rendering
+**원칙:** Particlization, Material Layering, Organic Integration
+
+## 1. General Requirements
+### 1.1 Persona & Tone
+* **Role:** Master of Wood Joinery & Organic Architecture.
+* **Mood:** Warmth, Porosity, Harmony with Nature.
+
+### 1.2 Sketch Interpretation Logic
+* **Line to Louver:** Line = Array of Louvers.
+* **Mass to Layers:** Volume = Stratum (Layered slabs).
+* **Edge Dissolution:** Blurred Edge (Not sharp).
+
+## 2. Material & Finish Schedule
+| Code | Location | Specification | Reference |
+| --- | --- | --- | --- |
+| **MAT-01** | **Main Facade** | **Japanese Cedar (Cryptomeria) Louvers** | *Japan National Stadium Eaves* |
+| **MAT-02** | **Structure** | **Interlocking Wood Joinery (Kigumi)** | *Sunny Hills / GC Prostho* |
+| **MAT-03** | **Solid Wall** | **Rough Hewn Stone Slats** | *V&A Dundee / Stone Museum* |
+| **MAT-04** | **Screen** | **Washi Paper / Bamboo Mesh** | *Nezu Museum Interior* |
+
+## 3. Tectonics & Geometric Logic
+### 3.1 Particlization
+* **Rule:** **"Divide and Dissolve."**
+* **Constraint:** No Big Blank Walls.
+* **Logic:** All surfaces broken down into 10-15cm slats/louvers. Erase weight.
+
+### 3.2 Joinery Syntax
+* **Rule:** **Jigoku-gumi (Hell Assembly).**
+* **Description:** X mark in sketch = Wood Joinery Grid (Not brace).
+
+### 3.3 Roof & Eaves
+* **Rule:** **Deep Eaves (Noki).**
+* **Logic:** Exaggerated eaves with exposed rafters. Deep shadow.
+
+## 4. Lighting & Environment
+* **Type:** **Komorebi (Dappled Light).**
+* **Shadow:** Dappled pattern through louvers.
+* **Surroundings:** Nature elements (Bamboo, Stone, Water) infiltrating.
+
+## 5. Winning Strategy Prompt (Master Prompt)
+\`\`\`
+# Role & Context
+Act as an architect specializing in Kengo Kuma's design philosophy ("Particlization"). 
+Transform the input sketch into a warm, organic architectural visualization defined by wood and natural light. 
+
+# 1. Reference Logic (Masterpiece Mapping)
+Synthesize the architectural DNA from the following sources:
+* **Facade Texture**: Apply the stacked stone/wood louver layers from **[V&A Dundee]**. 
+* **Roof Detail**: Interpret roof lines as deep eaves with exposed wooden rafters like the **[Japan National Stadium]**. 
+* **Joinery Pattern**: Convert cross-hatching or mesh lines into the 'Jigoku-gumi' wood joint pattern from **[Sunny Hills]**. 
+
+# 2. Propositional Constraints (Must-Haves)
+* **The Material IS**: Natural Japanese Cedar (Cryptomeria) and Rough Stone. 
+* **The Form IS**: A stratified assembly of small parts, NOT a solid monolithic volume. 
+* **The Facade IS**: Porous (allowing light to pass through), defined by vertical or horizontal slats. 
+* **The Atmosphere IS**: Warm, Zen-like, and blended with nature. 
+
+# 3. Technical Specifications
+* **Lighting**: 'Komorebi' effect (dappled light filtering through louvers). 
+* **Quality**: 8k, Photorealistic, Macro detail on wood grain. 
+
+#Instruction for Sketch processing
+* Break down all continuous lines into repetitive louver patterns. 
+* Interpret the building edge as soft and dissolving into the sky/ground. 
+* Fill any solid areas with a texture of stacked thin slabs.
+\`\`\`
+`
     };
 
     styleInstruction = `

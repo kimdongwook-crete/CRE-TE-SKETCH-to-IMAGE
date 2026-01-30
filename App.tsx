@@ -12,45 +12,27 @@ import { metadata } from './constants';
 
 const STYLE_DEFINITIONS = {
   A: {
-    title: "Silent Minimalism (침묵의 미니멀리즘)",
-    description: "\"본질적인 물성과 빛의 조각을 통해 고요한 존재감(Quiet Confidence)을 극대화하는 스타일\"",
-    philosophy: "장식을 배제하고 기하학적 순수성을 강조. '형태'보다는 빛이 닿는 '면'의 질감에 집중.",
-    references: "Peter Zumthor, Tadao Ando, John Pawson.",
-    palette: [
-      "Concrete: Exposed Aggregate Concrete (노출 콘크리트, 매끄럽지만 차가운 질감).",
-      "Stone: Vals Quartzite (발스 규암, 깊이감 있는 회색조).",
-      "Glass: Frameless Low-Iron Glass (프레임 없는 투명 유리를 통한 경계 소거)."
-    ],
-    atmosphere: [
-      "Lighting: Soft Diffused Light or Overcast. 그림자를 부드럽게 처리하여 덩어리감(Mass) 강조."
+    architect: "David Chipperfield (데이비드 치퍼필드)",
+    stylePoints: [
+      { title: "무게감 (Solidity)", desc: "건물이 땅에 무겁게 내려앉는 느낌과 기단부의 강조" },
+      { title: "재료의 물성 (Materiality)", desc: "무광의 거친 질감, 벽돌 및 프리캐스트 콘크리트 등 재료 본연의 성질 강조" },
+      { title: "수직적 리듬 (Vertical Rhythm)", desc: "깊이감 있는 루버나 열주(Colonnade)를 통한 엄격한 등간격의 수직 요소 배열" }
     ]
   },
   B: {
-    title: "Organic Biophilia (유기적 바이오필리아)",
-    description: "\"자연 소재의 따뜻함과 환경과의 유기적 통합을 강조하는 지속 가능한 건축 스타일\"",
-    philosophy: "직선보다는 자연스러운 흐름, 차가운 금속보다는 숨 쉬는 나무와 흙의 물성 강조.",
-    references: "Kengo Kuma, Frank Lloyd Wright, Bjarke Ingels (BIG).",
-    palette: [
-      "Wood: Weathered Cedar Slats (풍화된 삼나무 루버) 또는 Cross Laminated Timber (CLT).",
-      "Metal: Corten Steel (부식된 내후성 강판) - 시간의 흐름(Patina) 표현.",
-      "Interaction: 건물 틈새로 자라난 이끼나 덩굴 식물(Ivy)의 디테일."
-    ],
-    atmosphere: [
-      "Lighting: Golden Hour or Dappled Light (나뭇잎 사이로 떨어지는 빛). 따뜻한 색온도(3500K)."
+    architect: "Richard Meier (리차드 마이어)",
+    stylePoints: [
+      { title: "백색의 추상성 (Absolute Whiteness)", desc: "순수한 백색과 에나멜 패널을 통해 자연과 인공을 명확히 구분" },
+      { title: "기하학적 그리드 (Geometric Grid)", desc: "명확한 모듈러 그리드와 직각 체계 준수" },
+      { title: "빛의 대비 (Light & Contrast)", desc: "강렬한 직사광선과 그림자(Chiaroscuro)를 통해 백색 표면의 입체감 강조" }
     ]
   },
   C: {
-    title: "Raw Industrialism (로우 인더스트리얼)",
-    description: "\"구조적 솔직함과 거친 재료의 무게감을 통해 압도적인 분위기를 연출하는 스타일\"",
-    philosophy: "구조체(뼈대)를 숨기지 않고 드러냄. 세월의 흔적과 공업적 미학을 현대적으로 재해석.",
-    references: "Herzog & de Meuron, Olson Kundig, Brutalist Archives.",
-    palette: [
-      "Brick: Reclaimed Red Brick (재생 붉은 벽돌) 또는 Dark Grey Clinker Brick.",
-      "Steel: Blackened Steel I-Beams (검게 그을린 H빔) 및 Zinc Panels.",
-      "Details: 녹슨 볼트와 용접 자국 등 Micro-roughness 강조."
-    ],
-    atmosphere: [
-      "Lighting: Volumetric Fog & God Rays (먼지가 춤추는 듯한 빛의 밀도). Blue Hour의 차가운 톤."
+    architect: "Kengo Kuma (쿠마 켄고)",
+    stylePoints: [
+      { title: "입자화 (Particlization)", desc: "거대한 매스를 잘게 쪼개어 무게감을 소거하고 작은 부재들로 분절" },
+      { title: "재료의 적층 (Layering)", desc: "얇은 판재(돌, 나무)나 루버를 겹겹이 쌓아 올리는 지층 구조" },
+      { title: "자연적 결구 (Natural Joinery)", desc: "못이나 접착제 없이 나무가 얽히는 목조 결구 방식" }
     ]
   }
 };
@@ -401,7 +383,7 @@ function App() {
                     <>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <label className="font-display text-xl block">STYLE LIST</label>
+                          <label className="font-display text-xl block">ARCHITECT STYLE</label>
                           <button
                             onClick={() => setViewingStyle(null)}
                             className="hover:opacity-60 transition-opacity"
@@ -414,37 +396,20 @@ function App() {
                             <div className="space-y-4">
                               <div>
                                 <p className="font-bold text-xs mb-1 text-black dark:text-white uppercase">
-                                  {STYLE_DEFINITIONS[viewingStyle].title}
+                                  {STYLE_DEFINITIONS[viewingStyle].architect}
                                 </p>
-                                <p className="italic opacity-90">{STYLE_DEFINITIONS[viewingStyle].description}</p>
                               </div>
 
                               <div>
-                                <p className="font-bold opacity-70 mb-0.5">• Design Philosophy:</p>
-                                <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].philosophy}</p>
-                              </div>
-
-                              <div>
-                                <p className="font-bold opacity-70 mb-0.5">• Key Reference:</p>
-                                <p className="opacity-80">{STYLE_DEFINITIONS[viewingStyle].references}</p>
-                              </div>
-
-                              <div>
-                                <p className="font-bold opacity-70 mb-0.5">• Material Palette (POSI-GAP):</p>
-                                <ul className="list-disc pl-4 space-y-0.5 opacity-80">
-                                  {STYLE_DEFINITIONS[viewingStyle].palette.map((item, i) => (
-                                    <li key={i}>{item}</li>
+                                <p className="font-bold opacity-70 mb-2">STYLE</p>
+                                <div className="space-y-3">
+                                  {STYLE_DEFINITIONS[viewingStyle].stylePoints.map((point, i) => (
+                                    <div key={i}>
+                                      <p className="font-bold opacity-80 mb-0.5">* {point.title}</p>
+                                      <p className="opacity-80 pl-2">- {point.desc}</p>
+                                    </div>
                                   ))}
-                                </ul>
-                              </div>
-
-                              <div>
-                                <p className="font-bold opacity-70 mb-0.5">• Optical Atmosphere:</p>
-                                <ul className="list-disc pl-4 space-y-0.5 opacity-80">
-                                  {STYLE_DEFINITIONS[viewingStyle].atmosphere.map((item, i) => (
-                                    <li key={i}>{item}</li>
-                                  ))}
-                                </ul>
+                                </div>
                               </div>
                             </div>
                           )}
@@ -523,7 +488,7 @@ function App() {
                       </div>
 
                       <div className="space-y-3 short:space-y-1.5">
-                        <label className="font-display text-xl short:text-lg block">STYLE</label>
+                        <label className="font-display text-xl short:text-lg block">ARCHITECT STYLE</label>
                         <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
                           {['A', 'B', 'C', 'NONE'].map((style, idx) => (
                             <button
