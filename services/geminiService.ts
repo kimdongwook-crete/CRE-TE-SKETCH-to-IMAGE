@@ -100,11 +100,11 @@ These rules apply to ALL contexts:
 - **Deep Set Recess:** Windows recessed 450-600mm into facade
 - **Strict Equidistance:** Vertical elements arranged in classical proportion
 - **Material Weight:** Surfaces are matte, non-reflective, textured (Sandblasted)
-### Camera & Quality:
-- **Camera:** Static Eye-Level Shot, 1-point perspective, 50mm lens
-- **Mood:** Silence, Timelessness, Solidity
-- **Quality:** 8k, Photorealistic, Architectural Photography
-- **Tone:** Desaturated Earth Tones (Stone Grey, Cream, Travertine Beige)
+### Tectonics (From 기존 시방서):
+- **NO PILOTIS:** Building must sit heavily on ground via podium
+- **Deep Set Recess:** Windows recessed 450-600mm into facade
+- **Strict Equidistance:** Vertical elements arranged in classical proportion
+- **Material Weight:** Surfaces are matte, non-reflective, textured (Sandblasted)
 ---
 
 ## Reference Projects (Masterpiece Mapping):
@@ -183,11 +183,12 @@ These rules apply to ALL contexts:
 - **Elevated Massing:** NO ground contact for main volume. Always pilotis OR podium.
 - **Layering Detail:** Facade = [White columns] - [Clear glass] - [White enamel screen with black grid]
 - **Transparency Rule:** Interior circulation visible through glass (ramps, stairs project outward)
-### Camera & Quality:
-- **Camera:** Low-Angle Shot (Worm's eye view), 24mm wide lens for dramatic upward perspective
-- **Mood:** Clarity, Purity, Rationality
-- **Quality:** 8k, Photorealistic, Sharp Focus on geometric edges
-- **Tone:** Pure white with deep blue sky contrast
+### Tectonics:
+- **Absolute Whiteness:** ALL surfaces #FFFFFF. NO beige, grey, warm tones. Black joints ONLY.
+- **Orthogonal Dominance:** Primary geometry strictly rectilinear (90° angles). Curves are secondary exceptions.
+- **Elevated Massing:** NO ground contact for main volume. Always pilotis OR podium.
+- **Layering Detail:** Facade = [White columns] - [Clear glass] - [White enamel screen with black grid]
+- **Transparency Rule:** Interior circulation visible through glass (ramps, stairs project outward)
 ---
 
 ## Reference Projects (Masterpiece Mapping):
@@ -304,11 +305,10 @@ These rules apply to ALL contexts:
 - **Natural First:** Wood, stone, bamboo, washi-like translucency as primary; metal and glass only as support.
 - **Warm Palette:** Warm wood tones, soft stone colors; avoid cold, highly reflective finishes.
 - **Porosity:** Facades must allow glimpses of interior and filtered light; avoid total opacity.
-### Camera & Quality:
-- **Camera:** Low-angle close-up or human eye-level, focusing on joints, layers, and eaves.
-- **Mood:** Warmth, Porosity, Harmony with Nature.
-- **Quality:** 8k, Photorealistic, high detail on wood grain and joinery.
-- **Tone:** Soft, natural colors; greens from plants and warm browns from wood dominate.
+### Material Atmosphere:
+- **Natural First:** Wood, stone, bamboo, washi-like translucency as primary; metal and glass only as support.
+- **Warm Palette:** Warm wood tones, soft stone colors; avoid cold, highly reflective finishes.
+- **Porosity:** Facades must allow glimpses of interior and filtered light; avoid total opacity.
 ---
 
 ## Reference Projects (Masterpiece Mapping):
