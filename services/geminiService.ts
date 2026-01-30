@@ -337,7 +337,10 @@ These rules apply to ALL contexts:
               * **Priority 1:** You MUST refer to the following specific guide for STYLE [${styleMode}]:
               ${definitions[styleMode as keyof typeof definitions]}
               
-              * **CRITICAL EXCEPTION:** If User Mode Preference is [DETAIL], you MUST IGNORE the 'Optical' lens specification (e.g., 50mm, 35mm, 24mm) from the Style List above. Instead, strictly follow the [Layer 2] instruction to maintain the original sketch's viewpoint.
+              * **CRITICAL EXCEPTION (CAMERA PRIORITY):** The User Mode Preference ([${mode}]) defines the **ABSOLUTE CAMERA & LENS SETTINGS**.
+              * You MUST IGNORE any conflicting 'Optical', 'Lens', 'Focal Length', or 'Camera' specifications found in the STYLE definition above.
+              * **ALWAYS USE:** The specific lens and framing rules defined in [Layer 2: Optical Physics Specs].
+              * **NEVER USE:** The style's default camera (e.g., if Style A says '50mm' but Mode is 'DETAIL' with 'Tilt-Shift', use 'Tilt-Shift').
               
               * **Priority 2:** Only if the definitions above are inapplicable, refer to general web data.`;
   }
