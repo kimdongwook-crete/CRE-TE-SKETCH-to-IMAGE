@@ -12,23 +12,24 @@ export const TIMEOUT_IMAGE_GEN = 60000; // 60s
 export const TIMEOUT_REFINE = 90000; // 90s (Longer for refinement)
 
 // Camera Profiles (Lens & Constraints)
+// Camera Profiles (Unified Logic: AI Lens Selection + Strict Framing)
 export const CAMERA_PROFILES = {
-    // 1. CONCEPT 모드: 약간의 광각 + 얕은 심도로 감성적 연출
+    // 1. CONCEPT 모드
     CONCEPT: {
-        lens: "35mm Standard Wide Lens",  // 적당한 넓이감
-        aperture: "f/5.6",                // 배경을 살짝 부드럽게 (Depth)
-        distortion: "Minimal Distortion", // 자연스러운 투시
-        // [불변 제약] 시점/구도 고정
-        constraint: "STRICTLY MATCH the viewpoint and framing of the sketch. DO NOT CHANGE CAMERA POSITION."
+        lens: "AI-Selected (Match Sketch Scale/Context)", // Variable
+        aperture: "AI-Selected (Match Depth)",            // Variable
+        distortion: "Zero Distortion (0%)",               // FIXED
+        // [5-Point Constraint System]
+        constraint: "1. VIEWPOINT LOCK: Strictly maintain the exact angle. 2. FRAMING LOCK: DO NOT ZOOM. DO NOT CROP. RENDER FULL VIEW. 3. VERTICAL CORRECTION: Apply Tilt-Shift to make verticals parallel. 4. ZERO DISTORTION. 5. GEOMETRY ALIGNMENT: Match layout exactly."
     },
 
-    // 2. DETAIL 모드: 틸트-시프트 + 팬포커스로 정밀한 건축 기록
+    // 2. DETAIL 모드 (동일 로직, 화질/텍스처 강조)
     DETAIL: {
-        lens: "Tilt-Shift Lens",          // 수직선 교정 (Architectural Standard)
-        aperture: "f/11",                 // 전체가 선명한 팬포커스 (Deep Focus)
-        distortion: "Zero Distortion",    // 왜곡 없는 수직/수평 정렬
-        // [불변 제약] 시점/구도 고정 + 수직선 보정
-        constraint: "STRICTLY MATCH the viewpoint and framing of the sketch. CORRECT VERTICAL PERSPECTIVE convergence."
+        lens: "AI-Selected (Match Sketch Scale/Context)", // Variable
+        aperture: "AI-Selected (Match Depth)",            // Variable 
+        distortion: "Zero Distortion (0%)",               // FIXED
+        // [5-Point Constraint System]
+        constraint: "1. VIEWPOINT LOCK: Strictly maintain the exact angle. 2. FRAMING LOCK: DO NOT ZOOM. DO NOT CROP. RENDER FULL VIEW. 3. VERTICAL CORRECTION: Apply Tilt-Shift to make verticals parallel. 4. ZERO DISTORTION. 5. GEOMETRY ALIGNMENT: Match layout exactly."
     }
 } as const;
 
