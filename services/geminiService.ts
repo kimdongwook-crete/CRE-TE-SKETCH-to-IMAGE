@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, CAMERA_PROFILES, SYSTEM_ARCHITECTURE_CONSTITUTION } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, SCENARIO_PROFILES, SYSTEM_ARCHITECTURE_CONSTITUTION } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -337,10 +337,10 @@ These rules apply to ALL contexts:
               * **Priority 1:** You MUST refer to the following specific guide for STYLE [${styleMode}]:
               ${definitions[styleMode as keyof typeof definitions]}
               
-              * **CRITICAL EXCEPTION (CAMERA PRIORITY):** The User Mode Preference ([${mode}]) defines the **ABSOLUTE CAMERA & LENS SETTINGS**.
-              * You MUST IGNORE any conflicting 'Optical', 'Lens', 'Focal Length', or 'Camera' specifications found in the STYLE definition above.
-              * **ALWAYS USE:** The specific lens and framing rules defined in [Layer 2: Optical Physics Specs].
-              * **NEVER USE:** The style's default camera (e.g., if Style A says '50mm' but Mode is 'DETAIL' with 'Tilt-Shift', use 'Tilt-Shift').
+              * **CRITICAL EXCEPTION:** The SYSTEM_ARCHITECTURE_CONSTITUTION acts as the Supreme Law.
+              * **CAMERA SELECTION:** You (AI) MUST select the best Optical Scenario (A/B/C/D) from the list below based on the sketch context.
+              * **SCENARIO PRIORITY:** The selected Scenario's optical specs (Lens/Aperture) OVERRIDE any style defaults.
+              * **NEVER MOVE CAMERA:** Even if the Style or Scenario implies a view change, you MUST LOCK the camera to the sketch's viewpoint.
               
               * **Priority 2:** Only if the definitions above are inapplicable, refer to general web data.`;
   }
@@ -369,6 +369,9 @@ These rules apply to ALL contexts:
 
               ${styleInstruction}
 
+              **OPTICAL SCENARIO LIST (Select ONE based on sketch context):**
+              ${JSON.stringify(SCENARIO_PROFILES, null, 2)}
+              
               Produce a report in the following strict Markdown format:
 
               # 🏗️ Blueprint Realization Report v3.0
@@ -383,7 +386,11 @@ These rules apply to ALL contexts:
               * **Design Strategy:** [Active Shaping / Passive Preservation]
               * **Sensory-Technical Translation (감각-기술 번역):**
                   * *Abstract:* (User's abstract intent, e.g., "Cozy", "Grand")
-                  * *→ Tech Spec:* (Translated physical/optical values, e.g., "3200K Warm Light", "Low-angle 16mm Lens")
+                  * *→ Tech Spec:* (Translated physical/optical values)
+              * **Optical Scenario Selection (AI Autonomous Decision):**
+                  * **Selected Scenario:** [A / B / C / D]
+                  * **Reasoning:** (Why this lens best fits the sketch's scale/context?)
+                  * **Applied Specs:** [Lens Name] / [Aperture]
 
               ## 2. Spatial & Logic Decoding (공간 및 논리 해독)
               * **Geometry (Layer 1 Input):** [Main structural lines/forms to preserve]
@@ -399,10 +406,11 @@ These rules apply to ALL contexts:
               ::
               [Layer 2: Optical Physics Specs (Simulation)]
                [CAMERA LENS SETUP]
-               * Lens: ${CAMERA_PROFILES[mode].lens}
-               * Aperture: ${CAMERA_PROFILES[mode].aperture}
-               * Perspective Control: ${CAMERA_PROFILES[mode].distortion}
-               * GUIDELINE: ${CAMERA_PROFILES[mode].constraint}
+               [CAMERA LENS SETUP]
+               * Lens: [Insert Lens Spec from Selected Scenario A/B/C/D]
+               * Aperture: [Insert Aperture Spec from Selected Scenario A/B/C/D]
+               * Effect: [Insert Effect Description]
+               * GUIDELINE: 1. VIEWPOINT LOCK: Strictly maintain the exact angle. 2. FRAMING LOCK: DO NOT ZOOM. DO NOT CROP. RENDER FULL VIEW. 3. VERTICAL CORRECTION: Apply Tilt-Shift to make verticals parallel. 4. ZERO DISTORTION. 5. GEOMETRY ALIGNMENT: Match layout exactly.
                (SHOT ON: Fujifilm GFX 100S, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)
               ::
               [Layer 3: Material, Atmosphere & Entropy (POSI-GAP)]

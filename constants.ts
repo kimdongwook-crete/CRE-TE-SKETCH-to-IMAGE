@@ -33,23 +33,32 @@ You are an AI Architect specializing in transferring hand-drawn sketches into ph
 `;
 
 // Camera Profiles (Unified Logic: AI Lens Selection + Strict Framing)
-export const CAMERA_PROFILES = {
-    // 1. CONCEPT 모드
-    CONCEPT: {
-        lens: "AI-Selected (Match Sketch Scale/Context)", // Variable
-        aperture: "AI-Selected (Match Depth)",            // Variable
-        distortion: "Zero Distortion (0%)",               // FIXED
-        // [5-Point Constraint System]
-        constraint: "1. VIEWPOINT LOCK: Strictly maintain the exact angle. 2. FRAMING LOCK: DO NOT ZOOM. DO NOT CROP. RENDER FULL VIEW. 3. VERTICAL CORRECTION: Apply Tilt-Shift to make verticals parallel. 4. ZERO DISTORTION. 5. GEOMETRY ALIGNMENT: Match layout exactly."
+// Optical Scenarios (AI chooses 1 of 4 depending on context)
+// NOTE: Viewpoint & Framing are ALWAYS locked to the sketch. Only Lens/Aperture physics change.
+export const SCENARIO_PROFILES = {
+    // Scenario A: Cinematic Wide (시네마틱 광각)
+    A: {
+        lens: "24mm Wide-Angle equivalent",
+        effect: "Expands spatial depth within the fixed frame.",
+        aperture: "f/8 (Clear Focus)"
     },
-
-    // 2. DETAIL 모드 (동일 로직, 화질/텍스처 강조)
-    DETAIL: {
-        lens: "AI-Selected (Match Sketch Scale/Context)", // Variable
-        aperture: "AI-Selected (Match Depth)",            // Variable 
-        distortion: "Zero Distortion (0%)",               // FIXED
-        // [5-Point Constraint System]
-        constraint: "1. VIEWPOINT LOCK: Strictly maintain the exact angle. 2. FRAMING LOCK: DO NOT ZOOM. DO NOT CROP. RENDER FULL VIEW. 3. VERTICAL CORRECTION: Apply Tilt-Shift to make verticals parallel. 4. ZERO DISTORTION. 5. GEOMETRY ALIGNMENT: Match layout exactly."
+    // Scenario B: Compression / Telephoto (망원 압축)
+    B: {
+        lens: "85mm+ Telephoto equivalent",
+        effect: "Compresses distance, flattens geometry.",
+        aperture: "f/5.6"
+    },
+    // Scenario C: Macro Detail (초정밀 디테일)
+    C: {
+        lens: "100mm Macro equivalent",
+        effect: "Extreme focus on texture grains, shallow depth.",
+        aperture: "f/2.8 ~ f/4"
+    },
+    // Scenario D: Architectural Standard (건축 표준)
+    D: {
+        lens: "Tilt-Shift 35mm equivalent",
+        effect: "Corrects all vertical lines. Zero distortion. Professional catalog look.",
+        aperture: "f/11 (Deep Focus)"
     }
 } as const;
 
