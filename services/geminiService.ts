@@ -50,213 +50,285 @@ export const analyzeSketch = async (
       A: `
 # David Chipperfield
 ------------------------------------
-**활용:** User Sketch -> David Chipperfield Style Rendering
-**원칙:** Propositional Definition, Positive Absolute, Contextual Anchoring
-
-## 1. General Requirements
-### 1.1 Persona & Tone
-* **Role:** Architectural Material Specialist & Heritage Conservation Architect.
-* **Mood:** Silence, Timelessness, Solidity.
-
-### 1.2 Sketch Interpretation Logic
-* **Line Weight:** Thick lines = Structural columns or Wall thickness.
-* **Vertical Lines:** Simple verticals = Deep Fins or Colonnade.
-* **Blank Space:** White space = Solid Wall (Not void).
-
-## 2. Material & Finish Schedule (Force Apply)
-| Code | Location | Specification | Reference |
-| --- | --- | --- | --- |
-| **MAT-01** | **Main Facade** | **Pale Beige Brick** (Long format) | *Kolumba Brick (Petersen Tegl)* |
-| **MAT-02** | **Structure** | **Sandblasted Precast Concrete** | *James-Simon-Galerie Columns* |
-| **MAT-03** | **Accent** | **Terrazzo / Travertine** | *Neues Museum Staircase* |
-| **MAT-04** | **Glazing** | **Low-Iron Clear Glass** (No Tint) | *Amorepacific HQ Transparency* |
-
-## 3. Tectonics & Geometric Logic
-### 3.1 Grounding
-* **Constraint:** **NO PILOTIS.**
-* **Rule:** Building must sit heavily on the ground (Podium).
-
-### 3.2 Depth of Facade
-* **Rule:** Deep Set Recess (Windows recessed 450mm ~ 600mm).
-* **Effect:** Reveal physical thickness. Eliminate "lightness".
-
-### 3.3 Rhythm & Repetition
-* **Rule:** Strict Equidistance for vertical elements. Correct irregular lines to Classical Proportion.
-
-## 4. Lighting & Environment
-* **Type:** **Diffuse Overcast Light**.
-* **Shadow:** Soft, highlighting texture.
-* **Sky:** Desaturated Grey Sky. No blue.
-
-## 5. Winning Strategy Prompt (Master Prompt)
-\`\`\`
 # Role & Context
-Act as a world-class architectural visualization expert specializing in David Chipperfield's work. 
-Convert the input sketch into a photorealistic rendering by strictly adhering to the following "David Chipperfield Style Specification". 
+Act as David Chipperfield, master of "Vitruvian Tectonics" specializing in post-and-beam parallelepipeds.
+Convert the input sketch into a photorealistic architectural visualization through a 4-phase process.
+---
 
-# 1. Reference Logic (Masterpiece Mapping)
-Synthesize the architectural DNA from the following sources:
-* ** Facade Rhythm**: Interpret vertical sketch lines as the deep-set aluminum/concrete fins of **[Amorepacific HQ]**. 
-* **Materiality**: Apply the texture of 'Pale Beige Bricks' and 'Precast Concrete' from **[Neues Museum]**. 
-* **Grounding**: Ensure the mass sits heavily on the ground like the **[James-Simon-Galerie]**. 
+## PHASE 1: Context Detection (맥락 분석)
+Analyze the sketch and categorize into ONE context:
+1. Dense Urban Site (existing buildings visible)
+2. Monument Renovation (ruins/historical fragments shown)
+3. Open Landscape (natural elements or isolated site)
+4. Large Public Building (massive single volume)
+5. Minimalist Request (< 10 lines in sketch)
+Output: "Detected Context = [Type]"
+---
 
-# 2. Propositional Constraints (Must-Haves)
-* **The Facade IS:** A rhythmic composition of vertical columns with a depth of 60cm. 
-* **The Material IS:** Matte, non-reflective, and textured (Sandblasted). 
-* **The Structure IS:** Monolithic and heavy. DO NOT create floating masses or pilotis. 
-* **The Color Palette IS:** Desaturated Earth Tones (Stone Grey, Cream, Travertine Beige). 
+## PHASE 2: Morphological Strategy (형태 조직화)
+Apply Fragment-Stagger-Layer principles:
+### Universal Rules (ALL contexts):
+- **Fragment:** Break single mass into 3-5 independent boxes
+- **Stagger:** Offset boxes by 30-50% to create voids
+- **Layer:** Apply 3-tier facade (Structure 450mm out, Glass 300mm in, Screen 100mm out)
 
-# 3. Technical Specifications
-* **Lighting: Soft overcast ambient light to highlight material texture. No harsh shadows. 
-* **Quality: 8k, Photorealistic, Architectural Photography. 
+### Context-Specific Modifications:
+- Urban: Insert boxes between existing buildings (Dovetailing)
+- Monument: Preserve ruins as "witness," insert new boxes adjacent
+- Landscape: Place all boxes on elevated podium (1-2m height)
+- Public: Connect boxes with colonnade (6m column spacing)
+- Minimalist: NO fragmentation; single parallelepiped only
+---
 
-# Instruction for Sketch processing
-* Treat rough outlines as solid, heavy masonry walls. 
-* Correct any perspective errors in the sketch to align with a strict orthogonal grid.
-\`\`\`
+## PHASE 3: Material & Lighting Derivation (재료·조명 파생)
+### Material Selection (Context-Driven):
+- **Urban:** Sample surrounding building colors → Use similar tone brick/concrete
+- **Monument:** Mix original material (reclaimed brick) + new sandblasted concrete
+- **Landscape:** Natural stone abstraction (Travertine, rough texture)
+- **Public:** Repetitive module (brick with strict equidistance OR prefab panel grid)
+- **Minimalist:** Single monolithic material (Pale Beige Brick OR Sandblasted Concrete, NOT both)
+### Lighting Settings:
+- **DEFAULT (80%):** Diffuse Overcast, Soft Shadow, Grey Sky
+- **Landscape:** Overcast with pale blue sky allowed (natural context)
+- **Monument:** Preserve shadow patterns from ruins, indirect light on new parts
+---
+
+## PHASE 4: Invariant Constraints (불변 규칙)
+These rules apply to ALL contexts:
+### Tectonics (From 기존 시방서):
+- **NO PILOTIS:** Building must sit heavily on ground via podium
+- **Deep Set Recess:** Windows recessed 450-600mm into facade
+- **Strict Equidistance:** Vertical elements arranged in classical proportion
+- **Material Weight:** Surfaces are matte, non-reflective, textured (Sandblasted)
+### Camera & Quality:
+- **Camera:** Static Eye-Level Shot, 1-point perspective, 50mm lens
+- **Mood:** Silence, Timelessness, Solidity
+- **Quality:** 8k, Photorealistic, Architectural Photography
+- **Tone:** Desaturated Earth Tones (Stone Grey, Cream, Travertine Beige)
+---
+
+## Reference Projects (Masterpiece Mapping):
+- **Fragment Logic:** HEC Paris "Flock of Geese" plan[page:28]
+- **Stagger Logic:** Ansaldo Milan "Jigsaw puzzle of volumes"[page:29]
+- **Layer Logic:** James-Simon-Galerie colonnade filter[page:29]
+- **Material Logic:** Neues Museum material continuity[page:29]
+- **Grounding Logic:** Salerno Palace "linked to common plinth"[page:28]
+---
+
+## Sketch Processing Instructions:
+1. FIRST: Detect context (urban/monument/landscape/public/minimalist)
+2. THEN: Apply morphological strategy (fragment-stagger-layer)
+3. THEN: Derive materials and lighting from context
+4. FINALLY: Enforce invariant constraints (no pilotis, deep recess, etc.)
+
+Treat rough outlines as solid masonry walls.
+Correct perspective errors to align with strict orthogonal grid.
 `,
       B: `
 # Richard Meier
 ------------------------------------
-**활용:** User Sketch -> Richard Meier Style Rendering
-**원칙:** Geometric Propositions, Absolute Whiteness, Optical Control
-
-## 1. General Requirements
-### 1.1 Persona & Tone
-* **Role:** Geometric Purist & Master of Light.
-* **Mood:** Clarity, Purity, Rationality.
-
-### 1.2 Sketch Interpretation Logic
-* **Grid Logic:** All lines snap to invisible 1m grid. Correct to Orthogonal.
-* **Curve Interpretation:** Curves are "Free-form Walls", independent of grid.
-* **Volume:** Collection of Planes (Skin), not solid mass.
-
-## 2. Material & Finish Schedule
-Force Color: #FFFFFF
-| Code | Location | Specification | Reference |
-| --- | --- | --- | --- |
-| **MAT-01** | **Exterior Skin** | **White Porcelain Enameled Panel** | *MACBA Facade (1m x 1m Grid)* |
-| **MAT-02** | **Glazing** | **Clear Float Glass** (No Tint/Reflectivity) | *Douglas House Windows* |
-| **MAT-03** | **Structure** | **White Painted Steel / Concrete** | *Getty Center Columns* |
-| **MAT-04** | **Circulation** | **White Stucco / Plaster** | *High Museum Ramp* |
-
-## 3. Tectonics & Geometric Logic
-### 3.1 Relationship with Site
-* **Rule:** **Lifted Volume.**
-* **Constraint:** Must use **Cylindrical Pilotis** or Podium. Distinct from ground.
-
-### 3.2 Facade Syntax
-* **Rule:** **Layering.**
-* **Description:** [Structure] - [Glass] - [Brise-soleil]. Deep layering.
-* **Detail:** Black joints visible on white panels.
-
-### 3.3 Transparency
-* **Rule:** Physical Transparency. Glass = Void. Reveal interior ramps/stairs.
-
-## 4. Lighting & Environment
-* **Type:** **Hard Direct Sunlight**.
-* **Shadow:** **Chiaroscuro.** Sharp, geometric shadows.
-* **Sky:** **Deep Azure Blue.** Clear sky for maximum contrast.
-
-## 5. Winning Strategy Prompt (Master Prompt)
-\`\`\`
 # Role & Context
-Act as a strict Architectural Geometry Specialist following Richard Meier's design principles. 
-Convert the input sketch into a pristine, white architectural visualization. 
+Act as Richard Meier, the master of "Geometric Purity" specializing in orthogonal grids and layered transparency.
+Convert the input sketch into a photorealistic architectural visualization through a 4-phase process.
+---
 
-# 1. Reference Logic (Masterpiece Mapping)
-Synthesize the architectural DNA from the following sources:
-* **Grid System**: Apply the 1m x 1m enamel panel grid from **[MACBA]** to all solid surfaces. 
-* **Massing**: Interpret the volume as a layered composition like **[The Douglas House]**, lifted from the ground. 
-* **Circulation**: If a ramp or stair is visible, render it as a projecting element like in **[The High Museum of Art]**. 
+## PHASE 1: Context Detection (맥락 분석)
+Analyze the sketch and categorize into ONE context:
+1. Dense Urban Site (tight boundaries, existing buildings implied)
+2. Monument Renovation (historical elements or layered textures)
+3. Open Landscape (natural surroundings or elevated views)
+4. Large Public Building (massive institutional scale, ramps/stairs visible)
+5. Minimalist Request (< 10 lines, extremely simple geometry)
+Output: "Detected Context = [Type]"
+---
 
-# 2. Propositional Constraints (Must-Haves)
-* **The Color IS**: Absolute White (#FFFFFF). No beige, no grey, no warm tones. 
-* **The Material IS**: Glossy Porcelain Enameled Panels with visible black joints. 
-* **The Structure IS**: Supported by white cylindrical pilotis. 
-* **The Geometry IS**: A strict interplay of rectilinear grids and free-form curves. 
+## PHASE 2: Morphological Strategy (형태 조직화)
+Apply Grid-Layer-Elevate principles:
+### Universal Rules (ALL contexts):
+- **Grid Orthogonalization:** Snap ALL lines to invisible 1m x 1m orthogonal grid. Correct hand-drawn distortions.
+- **Layered Transparency:** Apply 3-tier facade (Structure 300mm out, Glass flush, Screen 200mm out)
+- **Elevated Volume:** Lift main mass off ground via cylindrical pilotis (3-6m height) OR podium
+### Context-Specific Modifications:
+- Urban: Emphasize Brise-Soleil screen layering to filter city noise/light
+- Monument: Integrate historical fragments as "base layer" beneath white new structure
+- Landscape: Maximize elevation with slender pilotis; free-form curves against natural backdrop
+- Public: Make circulation (ramps/stairs) transparent and projecting like High Museum
+- Minimalist: Single pristine white volume with NO fragmentation; pure rectilinear form
+---
 
-# 3. Technical Specifications
-* **Lighting**: High-contrast daylight. Hard shadows cast by screen walls and mullions. 
-* **Sky**: Clear, deep blue sky to maximize contrast with the white building. 
-* **Quality**: 8k, Photorealistic, Sharp Focus. 
+## PHASE 3: Material & Lighting Derivation (재료·조명 파생)
+### Material Selection (Context-Driven):
+- **Urban:** White Porcelain Enamel Panels (1m x 1m grid, black joints) + Clear Float Glass
+  참조: MACBA Facade
+- **Monument:** White Stucco over historical base + White Painted Steel columns
+  참조: High Museum ramp integration
+- **Landscape:** Glossy White Panels contrasting natural textures + Minimal reflectivity glass
+  참조: Douglas House windows
+- **Public:** White Enamel Panels + White Concrete (for ramps/stairs)
+  참조: Getty Center columns
+- **Minimalist:** Absolute White (#FFFFFF) single material ONLY (Porcelain Enamel OR White Stucco)
+### Lighting Settings:
+- **DEFAULT (80%):** Hard Direct Sunlight, Chiaroscuro shadows (sharp geometric patterns)
+- **Sky:** Deep Azure Blue (cloudless) for maximum white-blue contrast
+- **Landscape:** High sun angle casting long shadows across free-form curves
+- **Monument/Public:** Directional light highlighting ramp/stair transparency
+- **Minimalist:** Even frontal lighting, minimal shadows (focus on material purity)
+---
 
-# Instruction for Sketch processing
-* Straighten all hand-drawn lines to a perfect orthogonal grid. 
-* Interpret any hatching in the sketch as a 'Brise-soleil' (Sun breaker) grid. 
-* Treat empty spaces between lines as clear glass revealing the interior.
-\`\`\`
+## PHASE 4: Invariant Constraints (불변 규칙)
+These rules apply to ALL contexts:
+### Tectonics:
+- **Absolute Whiteness:** ALL surfaces #FFFFFF. NO beige, grey, warm tones. Black joints ONLY.
+- **Orthogonal Dominance:** Primary geometry strictly rectilinear (90° angles). Curves are secondary exceptions.
+- **Elevated Massing:** NO ground contact for main volume. Always pilotis OR podium.
+- **Layering Detail:** Facade = [White columns] - [Clear glass] - [White enamel screen with black grid]
+- **Transparency Rule:** Interior circulation visible through glass (ramps, stairs project outward)
+### Camera & Quality:
+- **Camera:** Low-Angle Shot (Worm's eye view), 24mm wide lens for dramatic upward perspective
+- **Mood:** Clarity, Purity, Rationality
+- **Quality:** 8k, Photorealistic, Sharp Focus on geometric edges
+- **Tone:** Pure white with deep blue sky contrast
+---
+
+## Reference Projects (Masterpiece Mapping):
+- **Grid Logic:** MACBA "1m x 1m enamel panel grid"
+- **Layer Logic:** Douglas House "Structure-Glass-Screen layering"
+- **Elevation Logic:** High Museum "Lifted volumes on pilotis"
+- **Curve Integration:** Getty Center "Rectilinear grid + free-form elements"
+- **Transparency:** High Museum "Projecting transparent ramp"
+---
+
+## Sketch Processing Instructions:
+1. FIRST: Detect context (urban/monument/landscape/public/minimalist)
+2. THEN: Apply morphological strategy (grid-layer-elevate)
+3. THEN: Derive materials and lighting from context
+4. FINALLY: Enforce invariant constraints (absolute white, orthogonal grid, elevated mass)
+
+Straighten all hand-drawn lines to perfect orthogonal grid.
+Interpret hatching as 'Brise-Soleil' screen patterns.
+Treat empty spaces between lines as clear glass revealing layered interior structure.
 `,
       C: `
 # Kengo Kuma
 ------------------------------------
-**활용:** User Sketch -> Kengo Kuma Style Rendering
-**원칙:** Particlization, Material Layering, Organic Integration
-
-## 1. General Requirements
-### 1.1 Persona & Tone
-* **Role:** Master of Wood Joinery & Organic Architecture.
-* **Mood:** Warmth, Porosity, Harmony with Nature.
-
-### 1.2 Sketch Interpretation Logic
-* **Line to Louver:** Line = Array of Louvers.
-* **Mass to Layers:** Volume = Stratum (Layered slabs).
-* **Edge Dissolution:** Blurred Edge (Not sharp).
-
-## 2. Material & Finish Schedule
-| Code | Location | Specification | Reference |
-| --- | --- | --- | --- |
-| **MAT-01** | **Main Facade** | **Japanese Cedar (Cryptomeria) Louvers** | *Japan National Stadium Eaves* |
-| **MAT-02** | **Structure** | **Interlocking Wood Joinery (Kigumi)** | *Sunny Hills / GC Prostho* |
-| **MAT-03** | **Solid Wall** | **Rough Hewn Stone Slats** | *V&A Dundee / Stone Museum* |
-| **MAT-04** | **Screen** | **Washi Paper / Bamboo Mesh** | *Nezu Museum Interior* |
-
-## 3. Tectonics & Geometric Logic
-### 3.1 Particlization
-* **Rule:** **"Divide and Dissolve."**
-* **Constraint:** No Big Blank Walls.
-* **Logic:** All surfaces broken down into 10-15cm slats/louvers. Erase weight.
-
-### 3.2 Joinery Syntax
-* **Rule:** **Jigoku-gumi (Hell Assembly).**
-* **Description:** X mark in sketch = Wood Joinery Grid (Not brace).
-
-### 3.3 Roof & Eaves
-* **Rule:** **Deep Eaves (Noki).**
-* **Logic:** Exaggerated eaves with exposed rafters. Deep shadow.
-
-## 4. Lighting & Environment
-* **Type:** **Komorebi (Dappled Light).**
-* **Shadow:** Dappled pattern through louvers.
-* **Surroundings:** Nature elements (Bamboo, Stone, Water) infiltrating.
-
-## 5. Winning Strategy Prompt (Master Prompt)
-\`\`\`
 # Role & Context
-Act as an architect specializing in Kengo Kuma's design philosophy ("Particlization"). 
-Transform the input sketch into a warm, organic architectural visualization defined by wood and natural light. 
+Act as Kengo Kuma, the master of "Particlization and Nature Integration" specializing in dissolving solid volumes into layers of small elements.
+Convert the input sketch into an architectural visualization through a 4-phase process.
 
-# 1. Reference Logic (Masterpiece Mapping)
-Synthesize the architectural DNA from the following sources:
-* **Facade Texture**: Apply the stacked stone/wood louver layers from **[V&A Dundee]**. 
-* **Roof Detail**: Interpret roof lines as deep eaves with exposed wooden rafters like the **[Japan National Stadium]**. 
-* **Joinery Pattern**: Convert cross-hatching or mesh lines into the 'Jigoku-gumi' wood joint pattern from **[Sunny Hills]**. 
+---
+## PHASE 1: Context Detection (맥락 분석)
+Analyze the sketch and categorize into ONE context:
+1. Dense Urban Site (tight street walls, neighboring buildings implied)
+2. Monument Renovation (existing stone/brick fragments or heavy base)
+3. Forest / Garden Landscape (trees, water, or extensive planting)
+4. Large Public Building (museum, stadium, cultural facility scale)
+5. Minimalist Request (< 10 lines, very simple outlines)
+Output: "Detected Context = [Type]"
+---
 
-# 2. Propositional Constraints (Must-Haves)
-* **The Material IS**: Natural Japanese Cedar (Cryptomeria) and Rough Stone. 
-* **The Form IS**: A stratified assembly of small parts, NOT a solid monolithic volume. 
-* **The Facade IS**: Porous (allowing light to pass through), defined by vertical or horizontal slats. 
-* **The Atmosphere IS**: Warm, Zen-like, and blended with nature. 
+## PHASE 2: Morphological Strategy (형태 조직화)
+Apply Divide-Layer-Dissolve principles:
 
-# 3. Technical Specifications
-* **Lighting**: 'Komorebi' effect (dappled light filtering through louvers). 
-* **Quality**: 8k, Photorealistic, Macro detail on wood grain. 
+### Universal Rules (ALL contexts):
+- **Divide (Particlization):** Break every large surface into thin strips (10–15cm width) of wood/stone/bamboo.
+- **Layer (Stratification):** Stack these strips in multiple overlapping layers to create depth and porosity.
+- **Dissolve (Blurred Edge):** Avoid sharp building edges; let elements protrude and recess irregularly, visually blending with surroundings.
 
-#Instruction for Sketch processing
-* Break down all continuous lines into repetitive louver patterns. 
-* Interpret the building edge as soft and dissolving into the sky/ground. 
-* Fill any solid areas with a texture of stacked thin slabs.
-\`\`\`
+### Context-Specific Modifications:
+- **Urban:** 
+  - Use vertical wooden/bamboo louvers to soften street wall.
+  - Create semi-transparent screens instead of solid facades.
+- **Monument Renovation:** 
+  - Keep existing heavy stone as base layer.
+  - Add light wooden lattices (kigumi) in front/above as soft veil.
+- **Forest / Garden Landscape:** 
+  - Emphasize horizontal layering following topography.
+  - Integrate decks, bridges, and eaves that extend into trees and over water.
+- **Large Public Building:** 
+  - Express structural pattern as large-scale wooden lattice or stacked stone slats.
+  - Break mass into multiple low volumes connected by covered outdoor walkways.
+  - Break mass into multiple low volumes connected by covered outdoor walkways.
+- **Minimalist Request:** 
+  - Use one clear gesture: a single long, low volume with deep eaves and uniform louvers.
+  - Reduce complexity but keep particlization (no big blank walls).
+---
+
+## PHASE 3: Material & Lighting Derivation (재료·조명 파생)
+### Material Selection (Context-Driven):
+- **Urban:**
+  - Main: Warm-toned Japanese Cedar louvers.
+  - Secondary: Light-colored concrete or stone base, fine-grained finish.
+  - Screens: Bamboo or thin timber mesh, partial transparency.
+- **Monument Renovation:**
+  - Base: Existing rough stone or brick preserved/exposed.
+  - Added: Natural wood lattice (kigumi-style) standing slightly off the old wall.
+  - Interior: Washi-like translucent partitions for soft light.
+- **Forest / Garden Landscape:**
+  - Main: Untreated or lightly stained cedar, visible grain.
+  - Ground: Gravel, stepping stones, water surfaces instead of asphalt.
+  - Details: Bamboo railings, thin steel only as discreet support.
+- **Large Public Building:**
+  - Facade: Stacked stone or wood slats forming thick, porous skins.
+  - Structure: Exposed wood or concrete with warm tone, visually subordinate to skin pattern.
+  - Screens: Multi-layered louvers creating deep shadows.
+- **Minimalist Request:**
+  - Single dominant natural material (wood OR stone), no mixed palette.
+  - All secondary materials kept neutral and quiet.
+
+### Lighting Settings:
+- **DEFAULT (80%):** 
+  - "Komorebi" effect: dappled sunlight filtering through louvers and foliage.
+  - Soft, broken shadows on walls, floors, and roofs.
+- **Urban:** 
+  - Side-lighting that emphasizes depth of screens and cavities.
+- **Monument Renovation:** 
+  - Gentle light grazing old stone, stronger light on new wood layers to express time contrast.
+- **Forest / Garden Landscape:** 
+  - Low-angle sunlight through trees; reflected light from water surfaces.
+- **Large Public Building:** 
+  - Daylight penetrating deep through layered skins; night view with warm internal glow leaking out.
+- **Minimalist:** 
+  - Calm, even light with subtle dapple pattern; no extreme contrast.
+---
+
+## PHASE 4: Invariant Constraints (불변 규칙)
+These rules apply to ALL contexts:
+
+### Tectonics & Geometry:
+- **No Big Blank Wall:** Large continuous planes must be divided into small elements (slats, louvers, strips).
+- **Expressed Joinery:** Where elements meet, show joints and overlaps; avoid seamless, monolithic surfaces.
+- **Deep Eaves:** Roofs extend significantly beyond walls; underside always articulated with rafters or louvers.
+- **Blurred Boundary:** Building edge should visually dissolve into sky, trees, or ground via staggered elements.
+- **Low to the Ground:** Prefer horizontal, ground-hugging volumes over tall isolated towers.
+### Material Atmosphere:
+- **Natural First:** Wood, stone, bamboo, washi-like translucency as primary; metal and glass only as support.
+- **Warm Palette:** Warm wood tones, soft stone colors; avoid cold, highly reflective finishes.
+- **Porosity:** Facades must allow glimpses of interior and filtered light; avoid total opacity.
+### Camera & Quality:
+- **Camera:** Low-angle close-up or human eye-level, focusing on joints, layers, and eaves.
+- **Mood:** Warmth, Porosity, Harmony with Nature.
+- **Quality:** 8k, Photorealistic, high detail on wood grain and joinery.
+- **Tone:** Soft, natural colors; greens from plants and warm browns from wood dominate.
+---
+
+## Reference Projects (Masterpiece Mapping):
+- **Particlization:** Facade and roof layering reminiscent of Japan National Stadium eaves.
+- **Kigumi Joinery:** Interlocking wood lattice similar to Sunny Hills or GC Prostho Museum.
+- **Stacked Stone / Wood:** Stratified skin like V&A Dundee or stone/wood museums.
+- **Interior Screens:** Soft partitions and filtered light inspired by Nezu Museum.
+---
+
+## Sketch Processing Instructions:
+1. FIRST: Detect context (urban/monument/forest/public/minimalist).
+2. THEN: Apply morphological strategy (divide-layer-dissolve) according to context.
+3. THEN: Derive materials and lighting from context (always natural, warm, porous).
+4. FINALLY: Enforce invariant constraints (no big blank walls, deep eaves, expressed joinery).
+
+具体 지침:
+- Break all long continuous lines into repetitive slat or louver patterns.
+- Interpret thick lines as layered beams/eaves rather than single heavy edges.
+- Treat building outline as soft: allow roofs and slats to extend irregularly beyond the original sketch boundary.
+- Replace any large filled areas with textures of stacked thin slabs or dense louver arrays.
 `
     };
 
