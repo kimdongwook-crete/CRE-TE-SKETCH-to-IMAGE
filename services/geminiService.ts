@@ -297,7 +297,11 @@ Synthesize the architectural DNA from the following sources:
               # 🏗️ Blueprint Realization Report v3.0
 
               ## 1. Metacognitive Analysis (메타인지 분석)
-              * **Diagnosis:** [${mode}] / [STYLE: ${styleMode}]
+              * **Diagnosis:** [${mode}] / [${styleMode === 'A' ? 'David Chipperfield' :
+                  styleMode === 'B' ? 'Richard Meier' :
+                    styleMode === 'C' ? 'Kengo Kuma' :
+                      'None'
+                }]
                   * *Reasoning:* (Evaluation of sketch completion and clarity)
               * **Design Strategy:** [Active Shaping / Passive Preservation]
               * **Sensory-Technical Translation (감각-기술 번역):**
