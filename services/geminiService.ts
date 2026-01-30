@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, CAMERA_PROFILES } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -393,10 +393,12 @@ These rules apply to ALL contexts:
               (Strict description of architectural massing, lines, and form based on ${mode} analysis)
               ::
               [Layer 2: Optical Physics Specs (Simulation)]
-               ${mode === 'DETAIL'
-                  ? 'STRICT TILT-SHIFT & PERSPECTIVE CONTROL REQUIRED. 1. FIRST, APPLY "Tilt-Shift Lens" to geometrically correct vertical lines (Make them strictly parallel). 2. SECOND, based on the corrected verticals, maintain the EXACT viewpoint and camera angle of the original sketch. 3. DO NOT DISTORT the composition. Asymmetrical Composition, Negative Space, Wide Angle View, Rule of Thirds. (PHOTOGRAPHIC SPECS: Shot on Fujifilm GFX 100S, f/11 aperture, Deep Focus, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography, Subtle Film Grain, Slight Motion Blur, Micro-Dust/Dirty Lens Effect)'
-                  : 'Shot on Fujifilm GFX 100S, Tilt-Shift Lens (Mandatory), Perspective Control (Vertical lines strictly parallel), f/11 aperture, Deep Focus (Pan-focus), ISO 100, Hyper-realistic Architectural Photography, Subtle Film Grain, Slight Motion Blur, Micro-Dust/Dirty Lens Effect'
-                }
+               [CAMERA LENS SETUP]
+               * Lens: ${CAMERA_PROFILES[mode].lens}
+               * Aperture: ${CAMERA_PROFILES[mode].aperture}
+               * Perspective Control: ${CAMERA_PROFILES[mode].distortion}
+               * GUIDELINE: ${CAMERA_PROFILES[mode].constraint}
+               (SHOT ON: Fujifilm GFX 100S, ISO 100, 8K Resolution, Hyper-realistic Architectural Photography)
               ::
               [Layer 3: Material, Atmosphere & Entropy (POSI-GAP)]
               Facade strictly clad in [Specific Brand/Material Name], [Weathering/Patina Details], Volumetric Fog, Diffused Soft Light, [Time of Day/Weather], [Context Inference Result], Quiet Confidence, God Rays
