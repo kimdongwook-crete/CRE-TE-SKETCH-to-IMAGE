@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, CAMERA_PROFILES } from "../constants";
+import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, CAMERA_PROFILES, SYSTEM_ARCHITECTURE_CONSTITUTION } from "../constants";
 import { ImageResolution } from "../types";
 
 // Helper to get client with current key
@@ -359,6 +359,8 @@ These rules apply to ALL contexts:
             },
             {
               text: `
+              ${SYSTEM_ARCHITECTURE_CONSTITUTION}
+
               Analyze this architectural sketch using the "4-Layer Blueprint Realization" method.
               
               User Context: "${userNotes || 'None'}"
@@ -482,7 +484,7 @@ export const generateBlueprintImage = async (
         contents: {
           parts: [
             {
-              text: "STRICTLY MAINTAIN THE EXACT FRAMING AND PROPORTIONS OF THE INPUT IMAGE. DO NOT ZOOM IN. DO NOT CROP. RENDER THE FULL VIEW. Fill the surrounding empty space with appropriate context details.\n\n" + prompt
+              text: SYSTEM_ARCHITECTURE_CONSTITUTION + "\n\nSTRICTLY MAINTAIN THE EXACT FRAMING AND PROPORTIONS OF THE INPUT IMAGE. DO NOT ZOOM IN. DO NOT CROP. RENDER THE FULL VIEW. Fill the surrounding empty space with appropriate context details.\n\n" + prompt
             },
             {
               inlineData: {
