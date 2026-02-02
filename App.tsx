@@ -85,7 +85,7 @@ function App() {
   const [analysisReport, setAnalysisReport] = useState<AnalysisReport | null>(null);
 
   // Style View State
-  const [viewingStyle, setViewingStyle] = useState<'A' | 'B' | 'C' | null>(null);
+  const [viewingStyle, setViewingStyle] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE' | null>(null);
 
   // Feature State
   const [showLibrary, setShowLibrary] = useState(false);
@@ -153,7 +153,7 @@ function App() {
     return () => clearInterval(interval);
   }, [isProcessing]);
 
-  const handleStyleSelect = (style: 'A' | 'B' | 'C') => {
+  const handleStyleSelect = (style: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE') => {
     setStyleMode(style);
     setViewingStyle(null);
   };
