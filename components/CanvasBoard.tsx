@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { Pen, Eraser, Trash2, Undo, ImageIcon, Camera, MousePointer2 } from 'lucide-react';
+import { Pen, Eraser, Trash2, Undo, ImageIcon, Camera } from 'lucide-react';
 
 interface CanvasBoardProps {
   onImageChange: (hasImage: boolean) => void;
@@ -19,7 +19,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [tool, setTool] = useState<'pen' | 'eraser' | null>(null);
+  const [tool, setTool] = useState<'pen' | 'eraser' | null>('pen');
   const [activeColor, setActiveColor] = useState('#000000');
   const [eraserSize, setEraserSize] = useState(30);
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
@@ -30,51 +30,77 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
   const [showCursor, setShowCursor] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Initialize and Resize Canvases
-  useEffect(() => {
+  // Helper: Paint the background layer
+  const paintBackground = () => {
+    const bgCanvas = bgCanvasRef.current;
+    if (!bgCanvas) return;
+    const ctx = bgCanvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+    if (backgroundImage) {
+      drawImageProp(ctx, backgroundImage, 0, 0, bgCanvas.width, bgCanvas.height);
+    }
+  };
+
+  // Helper: Handle Resizing (Layout)
+  const handleResize = () => {
     const bgCanvas = bgCanvasRef.current;
     const drawCanvas = drawCanvasRef.current;
     const container = containerRef.current;
 
     if (!bgCanvas || !drawCanvas || !container) return;
 
-    const resizeCanvas = () => {
-      const { width, height } = container.getBoundingClientRect();
+    const { clientWidth, clientHeight } = container;
+    if (clientWidth === 0 || clientHeight === 0) return;
 
-      // Resize both canvases
-      bgCanvas.width = width;
-      bgCanvas.height = height;
-      drawCanvas.width = width;
-      drawCanvas.height = height;
-
-      const bgCtx = bgCanvas.getContext('2d');
+    // Only update and clear if dimensions actually changed
+    if (bgCanvas.width !== clientWidth || bgCanvas.height !== clientHeight) {
+      // Save current drawing
       const drawCtx = drawCanvas.getContext('2d');
+      let savedData: ImageData | null = null;
+      if (drawCtx && drawCanvas.width > 0 && drawCanvas.height > 0) {
+        savedData = drawCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height);
+      }
 
-      if (bgCtx && drawCtx) {
-        drawCtx.lineCap = 'round';
-        drawCtx.lineJoin = 'round';
+      bgCanvas.width = clientWidth;
+      bgCanvas.height = clientHeight;
+      drawCanvas.width = clientWidth;
+      drawCanvas.height = clientHeight;
 
-        // Redraw Background
-        if (backgroundImage) {
-          drawImageProp(bgCtx, backgroundImage, 0, 0, width, height);
-        } else {
-          bgCtx.fillStyle = '#FFFFFF';
-          bgCtx.fillRect(0, 0, width, height);
+      const newDrawCtx = drawCanvas.getContext('2d');
+      if (newDrawCtx) {
+        newDrawCtx.lineCap = 'round';
+        newDrawCtx.lineJoin = 'round';
+        if (savedData) {
+          newDrawCtx.putImageData(savedData, 0, 0);
         }
       }
-    };
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    return () => window.removeEventListener('resize', resizeCanvas);
+      // Re-paint background after resize
+      paintBackground();
+    }
+  };
+
+  // Effect: Initialization & Resize Listener
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Effect: Re-paint background when image changes (FIX for missing image)
+  useEffect(() => {
+    paintBackground();
   }, [backgroundImage]);
 
-  // Handle Paste Event
+  // Handle Paste
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       const items = e.clipboardData?.items;
       if (!items) return;
-
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf('image') !== -1) {
           const blob = items[i].getAsFile();
@@ -90,14 +116,13 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
             };
             reader.readAsDataURL(blob);
           }
-          break; // Only take the first image
+          break;
         }
       }
     };
-
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
-  }, []); // Run once on mount
+  }, []);
 
   useImperativeHandle(ref, () => ({
     exportImage: () => {
@@ -105,7 +130,6 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       const drawCanvas = drawCanvasRef.current;
       if (!bgCanvas || !drawCanvas) return null;
 
-      // Composite to a temporary canvas
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = bgCanvas.width;
       tempCanvas.height = bgCanvas.height;
@@ -171,6 +195,30 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     }
   };
 
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    let clientX, clientY;
+
+    if (window.TouchEvent && e instanceof TouchEvent || 'touches' in e) {
+      const te = e as unknown as React.TouchEvent;
+      if (te.touches.length > 0) {
+        clientX = te.touches[0].clientX;
+        clientY = te.touches[0].clientY;
+      } else {
+        clientX = te.changedTouches[0].clientX;
+        clientY = te.changedTouches[0].clientY;
+      }
+    } else {
+      clientX = (e as React.MouseEvent).clientX;
+      clientY = (e as React.MouseEvent).clientY;
+    }
+
+    return {
+      offsetX: clientX! - rect.left,
+      offsetY: clientY! - rect.top
+    };
+  };
+
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     if (!tool) return;
     const canvas = drawCanvasRef.current;
@@ -202,10 +250,11 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     }
 
     if (!isDrawing || !tool) return;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return;
+    const canvasEl = drawCanvasRef.current;
+    const ctx = canvasEl?.getContext('2d');
+    if (!canvasEl || !ctx) return;
 
-    const { offsetX, offsetY } = getCoordinates(e, canvas);
+    const { offsetX, offsetY } = getCoordinates(e, canvasEl);
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   };
@@ -215,27 +264,6 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     const ctx = canvas?.getContext('2d');
     if (ctx) ctx.closePath();
     setIsDrawing(false);
-  };
-
-  const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
-    const rect = canvas.getBoundingClientRect();
-    let clientX, clientY;
-
-    if (window.TouchEvent && e instanceof TouchEvent) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else if ('touches' in e) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = (e as React.MouseEvent).clientX;
-      clientY = (e as React.MouseEvent).clientY;
-    }
-
-    return {
-      offsetX: clientX - rect.left,
-      offsetY: clientY - rect.top
-    };
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -282,17 +310,13 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     offsetX = typeof offsetX === "number" ? offsetX : 0.5;
     offsetY = typeof offsetY === "number" ? offsetY : 0.5;
 
+    // Constraint check
     if (offsetX < 0) offsetX = 0;
     if (offsetY < 0) offsetY = 0;
     if (offsetX > 1) offsetX = 1;
     if (offsetY > 1) offsetY = 1;
 
-    var iw = img.width,
-      ih = img.height,
-      r = Math.min(w / iw, h / ih),
-      nw = iw * r,
-      nh = ih * r;
-
+    var iw = img.width, ih = img.height, r = Math.min(w / iw, h / ih), nw = iw * r, nh = ih * r;
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, w, h);
     ctx.drawImage(img, 0, 0, iw, ih, x + (w - nw) * offsetX, y + (h - nh) * offsetY, nw, nh);
@@ -301,12 +325,14 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
   const penCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'%3E%3C/path%3E%3C/svg%3E") 0 24, auto`;
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-white overflow-hidden">
-      {/* Toolbar z-30 to stay on top */}
-      <div className="absolute top-4 left-4 z-30 flex flex-col gap-0 bg-white border border-black p-0 shadow-none">
+    <div className="relative w-full h-full flex flex-col bg-white overflow-hidden select-none touch-none"
+      onContextMenu={(e) => e.preventDefault()}
+    >
+      {/* Restored Toolbar: Gap-2, shadow-sm, distinct buttons */}
+      <div className="absolute top-4 left-4 z-30 flex flex-col gap-2 p-0 shadow-none">
 
         {/* Pen Tool */}
-        <div className="relative group">
+        <div className="relative group bg-white border border-black shadow-sm">
           <button
             onClick={() => setTool(tool === 'pen' ? null : 'pen')}
             className={`p-2 transition-colors w-full flex items-center justify-center ${tool === 'pen' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
@@ -314,9 +340,9 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
           >
             <Pen size={16} />
           </button>
-          {/* Pen Palette - w-5 h-5 and gap-2 to match eraser length */}
+
           {tool === 'pen' && (
-            <div className="absolute left-full top-0 ml-[3px] border border-black bg-white flex flex-row h-full items-center px-2 py-1 gap-2 w-max">
+            <div className="absolute left-full top-0 ml-2 border border-black bg-white flex flex-row h-full items-center px-2 py-1 gap-2 w-max shadow-sm z-40">
               {COLORS.map(color => (
                 <button
                   key={color}
@@ -330,10 +356,8 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
           )}
         </div>
 
-        <div className="h-px bg-black w-full"></div>
-
         {/* Eraser Tool */}
-        <div className="relative group">
+        <div className="relative group bg-white border border-black shadow-sm">
           <button
             onClick={() => setTool(tool === 'eraser' ? null : 'eraser')}
             className={`p-2 transition-colors w-full flex items-center justify-center ${tool === 'eraser' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
@@ -341,9 +365,9 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
           >
             <Eraser size={16} />
           </button>
-          {/* Eraser Sizes */}
+
           {tool === 'eraser' && (
-            <div className="absolute left-full top-0 ml-[3px] border border-black bg-white flex flex-row h-full items-center px-2 py-1 gap-2 w-max">
+            <div className="absolute left-full top-0 ml-2 border border-black bg-white flex flex-row h-full items-center px-2 py-1 gap-2 w-max shadow-sm z-40">
               {ERASER_SIZES.map(size => (
                 <button
                   key={size}
@@ -361,29 +385,30 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
           )}
         </div>
 
-        <div className="h-px bg-black w-full"></div>
+        {/* Undo */}
+        <div className="bg-white border border-black shadow-sm">
+          <button
+            onClick={handleUndo}
+            className="p-2 hover:bg-gray-100 text-black transition-colors flex items-center justify-center w-full"
+            title="Undo"
+          >
+            <Undo size={16} />
+          </button>
+        </div>
 
-        {/* Undo & Clear */}
-        <button
-          onClick={handleUndo}
-          className="p-2 hover:bg-gray-100 text-black transition-colors flex items-center justify-center"
-          title="Undo"
-        >
-          <Undo size={16} />
-        </button>
-        <div className="h-px bg-black w-full"></div>
-        <button
-          onClick={handleClear}
-          className="p-2 hover:bg-red-50 text-red-600 transition-colors flex items-center justify-center"
-          title="Clear Canvas"
-        >
-          <Trash2 size={16} />
-        </button>
+        {/* Clear */}
+        <div className="bg-white border border-black shadow-sm">
+          <button
+            onClick={handleClear}
+            className="p-2 hover:bg-red-50 text-red-600 transition-colors flex items-center justify-center w-full"
+            title="Clear Canvas"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
       </div>
 
-
-
-      {/* Upload Buttons - z-30 to ensure clickability above canvas */}
+      {/* Upload Buttons */}
       {
         !backgroundImage && (
           <div className="absolute top-4 right-4 z-30 flex gap-0 border border-black bg-white shadow-none">
@@ -395,28 +420,17 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
               <span>UPLOAD</span>
             </button>
             <div className="w-px bg-black h-full"></div>
-
-            {/* MOBILE/TABLET: CAMERA (Direct Camera Access) */}
             <label className="lg:hidden p-2 hover:bg-gray-100 text-black flex items-center gap-2 px-3 font-display text-base tracking-wide cursor-pointer">
               <Camera size={16} />
               <span>CAMERA</span>
               <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} />
             </label>
-
-
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
           </div>
         )
       }
 
-      {/* Canvas Area with Layers */}
+      {/* Canvas Area with Layers (User Verified Structure) */}
       <div
         ref={containerRef}
         className="flex-1 bg-white relative touch-none overflow-hidden"
