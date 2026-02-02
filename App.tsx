@@ -499,7 +499,7 @@ function App() {
                                 setGeneratedImage(null);
                               }}
                               className={`
-                                h-12 flex items-center justify-center text-sm font-medium transition-colors
+                                h-12 flex items-center justify-center font-display text-lg short:text-base transition-colors
                                 ${viewingStyle === style
                                   ? 'bg-black text-white dark:bg-white dark:text-black'
                                   : 'bg-white text-black hover:bg-gray-100 dark:bg-black dark:text-white dark:hover:bg-gray-800'
