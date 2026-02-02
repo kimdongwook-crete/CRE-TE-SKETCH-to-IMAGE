@@ -48,7 +48,7 @@ function App() {
   const [resolution, setResolution] = useState<ImageResolution>(ImageResolution.Res_2K);
   const [aspectRatio, setAspectRatio] = useState<string>('4:3');
   const [vizMode, setVizMode] = useState<'CONCEPT' | 'DETAIL'>('CONCEPT');
-  const [styleMode, setStyleMode] = useState<'A' | 'B' | 'C' | 'NONE'>('A');
+  const [styleMode, setStyleMode] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE'>('NONE');
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [hasCanvasContent, setHasCanvasContent] = useState(false);
@@ -500,7 +500,7 @@ function App() {
                               }}
                               className={`
                                 h-12 flex items-center justify-center font-display text-lg short:text-base transition-colors
-                                ${viewingStyle === style
+                                ${styleMode === style
                                   ? 'bg-black text-white dark:bg-white dark:text-black'
                                   : 'bg-white text-black hover:bg-gray-100 dark:bg-black dark:text-white dark:hover:bg-gray-800'
                                 }
