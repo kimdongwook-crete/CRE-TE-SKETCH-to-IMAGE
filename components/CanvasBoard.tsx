@@ -328,8 +328,8 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     <div className="relative w-full h-full flex flex-col bg-white overflow-hidden select-none touch-none"
       onContextMenu={(e) => e.preventDefault()}
     >
-      {/* Restored Toolbar: Gap-2, shadow-sm, distinct buttons */}
-      <div className="absolute top-4 left-4 z-30 flex flex-col gap-2 p-0 shadow-none">
+      {/* Restored Toolbar: Gap-0 (Merged) as requested */}
+      <div className="absolute top-4 left-4 z-30 flex flex-col gap-0 p-0 shadow-none">
 
         {/* Pen Tool */}
         <div className="relative group bg-white border border-black shadow-sm">
