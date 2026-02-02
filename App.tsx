@@ -12,27 +12,57 @@ import { metadata } from './constants';
 
 const STYLE_DEFINITIONS = {
   A: {
-    architect: "David Chipperfield (데이비드 치퍼필드)",
+    architect: "CRE-TE STYLE A",
     stylePoints: [
-      { title: "무게감 (Solidity)", desc: "건물이 땅에 무겁게 내려앉는 느낌과 기단부의 강조" },
-      { title: "재료의 물성 (Materiality)", desc: "무광의 거친 질감, 벽돌 및 프리캐스트 콘크리트 등 재료 본연의 성질 강조" },
-      { title: "수직적 리듬 (Vertical Rhythm)", desc: "깊이감 있는 루버나 열주(Colonnade)를 통한 엄격한 등간격의 수직 요소 배열" }
+      { title: "Tectonics (구축성)", desc: "" },
+      { title: "Staggering (엇갈리기)", desc: "" },
+      { title: "Strict Equidistance (엄격한 등간격 배치)", desc: "" },
+      { title: "Material Weight (재료의 물성/무게감)", desc: "" }
     ]
   },
   B: {
-    architect: "Richard Meier (리차드 마이어)",
+    architect: "CRE-TE STYLE B",
     stylePoints: [
-      { title: "백색의 추상성 (Absolute Whiteness)", desc: "순수한 백색과 에나멜 패널을 통해 자연과 인공을 명확히 구분" },
-      { title: "기하학적 그리드 (Geometric Grid)", desc: "명확한 모듈러 그리드와 직각 체계 준수" },
-      { title: "빛의 대비 (Light & Contrast)", desc: "강렬한 직사광선과 그림자(Chiaroscuro)를 통해 백색 표면의 입체감 강조" }
+      { title: "Orthogonal Grid (직교 격자)", desc: "" },
+      { title: "Absolute Whiteness (절대 백색)", desc: "" },
+      { title: "Elevated Massing (매스의 부양)", desc: "" },
+      { title: "Transparency Rule (투명성 규칙)", desc: "" }
     ]
   },
   C: {
-    architect: "Kengo Kuma (쿠마 켄고)",
+    architect: "CRE-TE STYLE C",
     stylePoints: [
-      { title: "입자화 (Particlization)", desc: "거대한 매스를 잘게 쪼개어 무게감을 소거하고 작은 부재들로 분절" },
-      { title: "재료의 적층 (Layering)", desc: "얇은 판재(돌, 나무)나 루버를 겹겹이 쌓아 올리는 지층 구조" },
-      { title: "자연적 결구 (Natural Joinery)", desc: "못이나 접착제 없이 나무가 얽히는 목조 결구 방식" }
+      { title: "Expressed Joinery (결구의 노출)", desc: "" },
+      { title: "Deep Eaves (깊은 처마)", desc: "" },
+      { title: "Blurred Boundary (경계의 소거)", desc: "" },
+      { title: "Low to the Ground (지면 밀착형)", desc: "" }
+    ]
+  },
+  E: {
+    architect: "CRE-TE STYLE E",
+    stylePoints: [
+      { title: "Geometric Purity (기하학적 순수성)", desc: "" },
+      { title: "Surface Texture (면의 질감)", desc: "" },
+      { title: "Material Essence (본질적인 물성)", desc: "" },
+      { title: "Quiet Confidence (고요한 존재감)", desc: "" }
+    ]
+  },
+  F: {
+    architect: "CRE-TE STYLE F",
+    stylePoints: [
+      { title: "Organic Integration (유기적 통합)", desc: "" },
+      { title: "Natural Flow (자연스러운 흐름)", desc: "" },
+      { title: "Breathing Material (숨 쉬는 물성)", desc: "" },
+      { title: "Patina (시간의 흐름)", desc: "" }
+    ]
+  },
+  G: {
+    architect: "CRE-TE STYLE G",
+    stylePoints: [
+      { title: "Structural Honesty (구조적 솔직함)", desc: "" },
+      { title: "Raw Material Weight (거친 재료의 무게감)", desc: "" },
+      { title: "Industrial Aesthetics (공업적 미학)", desc: "" },
+      { title: "Reclaimed Texture (재생 텍스처/세월의 흔적)", desc: "" }
     ]
   }
 };
