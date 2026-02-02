@@ -490,7 +490,7 @@ function App() {
                       <div className="space-y-3 short:space-y-1.5">
                         <label className="font-display text-xl short:text-lg block">CRE-TE STYLE</label>
                         <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
-                          {['A', 'B', 'C', 'NONE'].map((style, idx) => (
+                          {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'NONE'].map((style, idx) => (
                             <button
                               key={style}
                               onClick={() => {

@@ -34,7 +34,7 @@ export const analyzeSketch = async (
   base64Image: string,
   userNotes: string,
   mode: 'CONCEPT' | 'DETAIL',
-  styleMode: 'A' | 'B' | 'C' | 'NONE'
+  styleMode: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE'
 ): Promise<string> => {
   const ai = getClient();
   const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
@@ -329,7 +329,11 @@ These rules apply to ALL contexts:
 - Interpret thick lines as layered beams/eaves rather than single heavy edges.
 - Treat building outline as soft: allow roofs and slats to extend irregularly beyond the original sketch boundary.
 - Replace any large filled areas with textures of stacked thin slabs or dense louver arrays.
-`
+`,
+      D: `# Reserved for Style D`,
+      E: `# Reserved for Style E`,
+      F: `# Reserved for Style F`,
+      G: `# Reserved for Style G`
     };
 
     styleInstruction = `
