@@ -489,22 +489,22 @@ function App() {
 
                       <div className="space-y-3 short:space-y-1.5">
                         <label className="font-display text-xl short:text-lg block">CRE-TE STYLE</label>
-                        <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
+                        <div className="grid grid-cols-4 gap-[1px] bg-black border border-black dark:border-white dark:bg-white overflow-hidden">
                           {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'NONE'].map((style, idx) => (
                             <button
                               key={style}
                               onClick={() => {
-                                if (style === 'NONE') {
-                                  setStyleMode('NONE');
-                                } else {
-                                  setViewingStyle(style as 'A' | 'B' | 'C');
-                                }
+                                setViewingStyle(style as any);
+                                setAnalysisReport(null);
+                                setGeneratedImage(null);
                               }}
-                              disabled={isProcessing}
-                              className={`py-2 short:py-1 font-display text-lg short:text-base transition-all ${styleMode === style
-                                ? 'bg-black text-white dark:bg-white dark:text-black'
-                                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-white dark:hover:text-black'
-                                } ${idx !== 0 ? 'border-l border-black dark:border-white' : ''}`}
+                              className={`
+                                h-12 flex items-center justify-center text-sm font-medium transition-colors
+                                ${viewingStyle === style
+                                  ? 'bg-black text-white dark:bg-white dark:text-black'
+                                  : 'bg-white text-black hover:bg-gray-100 dark:bg-black dark:text-white dark:hover:bg-gray-800'
+                                }
+                              `}
                             >
                               {style}
                             </button>
