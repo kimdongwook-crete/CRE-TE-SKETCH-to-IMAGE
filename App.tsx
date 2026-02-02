@@ -383,7 +383,7 @@ function App() {
                     <>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <label className="font-display text-xl block">ARCHITECT STYLE</label>
+                          <label className="font-display text-xl block">CRE-TE STYLE</label>
                           <button
                             onClick={() => setViewingStyle(null)}
                             className="hover:opacity-60 transition-opacity"
@@ -488,7 +488,7 @@ function App() {
                       </div>
 
                       <div className="space-y-3 short:space-y-1.5">
-                        <label className="font-display text-xl short:text-lg block">ARCHITECT STYLE</label>
+                        <label className="font-display text-xl short:text-lg block">CRE-TE STYLE</label>
                         <div className="grid grid-cols-4 gap-0 border border-black dark:border-white">
                           {['A', 'B', 'C', 'NONE'].map((style, idx) => (
                             <button
