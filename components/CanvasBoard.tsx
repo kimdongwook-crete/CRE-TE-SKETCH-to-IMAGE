@@ -19,7 +19,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [tool, setTool] = useState<'pen' | 'eraser' | null>('pen');
+  const [tool, setTool] = useState<'pen' | 'eraser' | null>(null);
   const [activeColor, setActiveColor] = useState('#000000');
   const [eraserSize, setEraserSize] = useState(30);
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
@@ -357,7 +357,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         </div>
 
         {/* Eraser Tool */}
-        <div className="relative group bg-white border border-black shadow-sm">
+        <div className="relative group bg-white border border-black shadow-sm -mt-px">
           <button
             onClick={() => setTool(tool === 'eraser' ? null : 'eraser')}
             className={`p-2 transition-colors w-full flex items-center justify-center ${tool === 'eraser' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
@@ -386,7 +386,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         </div>
 
         {/* Undo */}
-        <div className="bg-white border border-black shadow-sm">
+        <div className="bg-white border border-black shadow-sm -mt-px">
           <button
             onClick={handleUndo}
             className="p-2 hover:bg-gray-100 text-black transition-colors flex items-center justify-center w-full"
@@ -397,7 +397,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         </div>
 
         {/* Clear */}
-        <div className="bg-white border border-black shadow-sm">
+        <div className="bg-white border border-black shadow-sm -mt-px">
           <button
             onClick={handleClear}
             className="p-2 hover:bg-red-50 text-red-600 transition-colors flex items-center justify-center w-full"
