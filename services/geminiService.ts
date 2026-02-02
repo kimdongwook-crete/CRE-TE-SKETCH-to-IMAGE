@@ -448,11 +448,7 @@ Act as the AI Architect for **CRE-TE STYLE G** [Raw Industrialism] (로우 인�
               # 🏗️ Blueprint Realization Report v3.0
 
               ## 1. Metacognitive Analysis (메타인지 분석)
-              * **Diagnosis:** [${mode}] / [${styleMode === 'A' ? 'David Chipperfield' :
-                  styleMode === 'B' ? 'Richard Meier' :
-                    styleMode === 'C' ? 'Kengo Kuma' :
-                      'None'
-                }]
+              * **Diagnosis:** [${mode}] / [CRE-TE STYLE ${styleMode}]
                   * *Reasoning:* (Evaluation of sketch completion and clarity)
               * **Design Strategy:** [Active Shaping / Passive Preservation]
               * **Sensory-Technical Translation (감각-기술 번역):**
