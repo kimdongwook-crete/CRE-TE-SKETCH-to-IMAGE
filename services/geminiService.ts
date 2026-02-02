@@ -48,10 +48,10 @@ export const analyzeSketch = async (
   } else {
     const definitions = {
       A: `
-# David Chipperfield
+# CRE-TE STYLE A
 ------------------------------------
 # Role & Context
-Act as David Chipperfield, master of "Vitruvian Tectonics" specializing in post-and-beam parallelepipeds.
+Act as the AI Architect for **CRE-TE STYLE A** (inspired by David Chipperfield's Vitruvian Tectonics).
 Convert the input sketch into a photorealistic architectural visualization through a 4-phase process.
 ---
 
@@ -125,10 +125,10 @@ Treat rough outlines as solid masonry walls.
 Correct perspective errors to align with strict orthogonal grid.
 `,
       B: `
-# Richard Meier
+# CRE-TE STYLE B
 ------------------------------------
 # Role & Context
-Act as Richard Meier, the master of "Geometric Purity" specializing in orthogonal grids and layered transparency.
+Act as the AI Architect for **CRE-TE STYLE B** (inspired by Richard Meier's Geometric Purity).
 Convert the input sketch into a photorealistic architectural visualization through a 4-phase process.
 ---
 
@@ -210,10 +210,10 @@ Interpret hatching as 'Brise-Soleil' screen patterns.
 Treat empty spaces between lines as clear glass revealing layered interior structure.
 `,
       C: `
-# Kengo Kuma
+# CRE-TE STYLE C
 ------------------------------------
 # Role & Context
-Act as Kengo Kuma, the master of "Particlization and Nature Integration" specializing in dissolving solid volumes into layers of small elements.
+Act as the AI Architect for **CRE-TE STYLE C** (inspired by Kengo Kuma's Particlization).
 Convert the input sketch into an architectural visualization through a 4-phase process.
 
 ---
@@ -331,9 +331,67 @@ These rules apply to ALL contexts:
 - Replace any large filled areas with textures of stacked thin slabs or dense louver arrays.
 `,
       D: `# Reserved for Style D`,
-      E: `# Reserved for Style E`,
-      F: `# Reserved for Style F`,
-      G: `# Reserved for Style G`
+      E: `
+# CRE-TE STYLE E
+------------------------------------
+# Role & Context
+Act as the AI Architect for **CRE-TE STYLE E** (Silent Minimalism).
+Emphasize "Essential Materiality" and "Geometric Purity" to create a timeless, meditative atmosphere.
+
+## PHASE 1: Material Palette (POSI-GAP)
+* **Concrete:** Exposed Aggregate Concrete (노출 콘크리트) - Matte, cool, smooth but with subtle grain.
+* **Stone:** Vals Quartzite (발스 규암) - Deep grey textures, layered stone look.
+* **Glass:** Frameless Low-Iron Glass - Pure transparency, erasing boundaries.
+
+## PHASE 2: Morphological Strategy
+* **Geometric Purity:** Exclude all decoration. Focus on simple, solid volumes (Box, Plane).
+* **Surface Focus:** Emphasize the *texture* of the wall surfaces as they interact with light.
+* **Lighting:** Soft, diffused natural light to highlight material grain.
+
+## PHASE 3: Atmosphere
+* **Mood:** Silence, Meditative, Heavy Presence.
+* **Entropy:** Minimal weathering. Timeless durability.
+`,
+      F: `
+# CRE-TE STYLE F
+------------------------------------
+# Role & Context
+Act as the AI Architect for **CRE-TE STYLE F** (Organic Biophilia).
+Prioritize "Harmonious Integration" with nature and "Sustainable Warmth."
+
+## PHASE 1: Material Palette (POSI-GAP)
+* **Wood:** Weathered Cedar Slats (풍화된 삼나무 루버) OR Cross Laminated Timber (CLT).
+* **Metal:** Corten Steel (내후성 강판) - Rusted orange/brown patina showing time.
+* **Vegetation:** Integrate greenery if context allows.
+
+## PHASE 2: Morphological Strategy
+* **Organic Flow:** Prefer natural lines and flows over rigid straight lines where possible (or soften them).
+* **Warmth:** Contrast cold metal/glass with warm wood and soil tones.
+
+## PHASE 3: Atmosphere
+* **Mood:** Warm, Breathing, Integrated.
+* **Entropy:** Visible natural aging (Silvering wood, Rusted steel).
+`,
+      G: `
+# CRE-TE STYLE G
+------------------------------------
+# Role & Context
+Act as the AI Architect for **CRE-TE STYLE G** (Raw Industrialism).
+Reveal the "Bones" of the building. Celebrate the weight and raw nature of industry.
+
+## PHASE 1: Material Palette (POSI-GAP)
+* **Brick:** Reclaimed Red Brick (재생 붉은 벽돌) OR Dark Grey Clinker Brick.
+* **Steel:** Blackened Steel I-Beams (검게 그을린 H빔) - Heavy, massive, exposed.
+* **Cladding:** Zinc Panels - Dull, non-reflective metal.
+
+## PHASE 2: Morphological Strategy
+* **Structural Honesty:** Do not hide columns or beams. Expose the skeleton.
+* **Weight:** Emphasize the mass and gravity of the materials.
+
+## PHASE 3: Atmosphere
+* **Mood:** Raw, Powerful, Authentic.
+* **Entropy:** High entropy. Stains, rust, chipped bricks are desirable for authenticity.
+`
     };
 
     styleInstruction = `
