@@ -615,8 +615,14 @@ export const generateBlueprintImage = async (
     if (!draftImage) throw new Error("No image data found in response");
 
     // ---------------------------------------------------------
-    // STEP 3: REFINEMENT (High-Fidelity Post-Processing)
+    // STEP 3: REFINEMENT (DISABLED PER USER REQUEST)
     // ---------------------------------------------------------
+    // The user requested to skip the Refine step due to model errors.
+    // We return the Draft Image directly.
+    console.log("Skipping Step 3: Refinement (Disabled). Returning Draft Image.");
+    return draftImage;
+
+    /*
     try {
       console.log("Starting Step 3: Refinement with", MODEL_IMAGE_REFINE);
       const refinedImage = await withTimeout(refineDraftImage(draftImage, prompt, MODEL_IMAGE_REFINE), TIMEOUT_REFINE);
@@ -631,6 +637,7 @@ export const generateBlueprintImage = async (
         return draftImage; // Final Fallback
       }
     }
+    */
 
   } catch (error) {
     console.error("Generation Error:", error);
