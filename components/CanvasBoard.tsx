@@ -136,8 +136,10 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
 
       setTransform(prev => {
         const newScale = Math.min(Math.max(prev.scale * scaleFactor, 1.0), 5); // 1.0x to 5x (Min 100%)
-        // Note: Sophisticated zoom-to-cursor logic could go here, 
-        // but simple center-zoom or current-view zoom is safer for stability first.
+        // Auto-center if scale is effectively 1.0
+        if (newScale <= 1.001) {
+          return { x: 0, y: 0, scale: 1 };
+        }
         return { ...prev, scale: newScale };
       });
     };
@@ -380,11 +382,18 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     const deltaX = cx - lastTouchCenterRef.current.x;
     const deltaY = cy - lastTouchCenterRef.current.y;
 
-    setTransform(prev => ({
-      x: prev.x + deltaX, // Add pinch logic for zoom-towards-center later if needed, simple pan for now
-      y: prev.y + deltaY,
-      scale: Math.min(Math.max(prev.scale * deltaScale, 1.0), 5) // Min 100%
-    }));
+    setTransform(prev => {
+      const newScale = Math.min(Math.max(prev.scale * deltaScale, 1.0), 5);
+      // Auto-center if scale is effectively 1.0
+      if (newScale <= 1.001) {
+        return { x: 0, y: 0, scale: 1 };
+      }
+      return {
+        x: prev.x + deltaX,
+        y: prev.y + deltaY,
+        scale: newScale
+      };
+    });
 
     lastTouchDistRef.current = dist;
     lastTouchCenterRef.current = { x: cx, y: cy };
