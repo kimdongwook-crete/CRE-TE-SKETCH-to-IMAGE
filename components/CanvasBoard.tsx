@@ -135,7 +135,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       const scaleFactor = 1 + (delta * zoomIntensity);
 
       setTransform(prev => {
-        const newScale = Math.min(Math.max(prev.scale * scaleFactor, 0.1), 5); // 0.1x to 5x
+        const newScale = Math.min(Math.max(prev.scale * scaleFactor, 1.0), 5); // 1.0x to 5x (Min 100%)
         // Note: Sophisticated zoom-to-cursor logic could go here, 
         // but simple center-zoom or current-view zoom is safer for stability first.
         return { ...prev, scale: newScale };
@@ -383,7 +383,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     setTransform(prev => ({
       x: prev.x + deltaX, // Add pinch logic for zoom-towards-center later if needed, simple pan for now
       y: prev.y + deltaY,
-      scale: Math.min(Math.max(prev.scale * deltaScale, 0.1), 5)
+      scale: Math.min(Math.max(prev.scale * deltaScale, 1.0), 5) // Min 100%
     }));
 
     lastTouchDistRef.current = dist;
