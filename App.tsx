@@ -487,7 +487,10 @@ function App() {
                   <div className="border border-black dark:border-white">
                     {viewingStyle ? (
                       <button
-                        onClick={() => handleStyleSelect(viewingStyle)}
+                        onClick={() => {
+                          setStyleMode(viewingStyle);
+                          setViewingStyle(null);
+                        }}
                         className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                       >
                         <span className="pt-1">SELECT</span>
