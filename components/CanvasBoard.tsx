@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, forwardRef, useImperativeHandle, useCallback } from 'react';
-import { Pen, Eraser, Trash2, Undo, ImageIcon, Camera } from 'lucide-react';
+import { Pen, Eraser, Trash2, Undo, ImageIcon, Camera, X } from 'lucide-react';
 
 interface CanvasBoardProps {
   onImageChange: (hasImage: boolean) => void;
@@ -194,7 +194,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       }
       return null;
     },
-    clear: handleClear
+    clear: handleFullClear
   }));
 
   const saveState = () => {
@@ -465,7 +465,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     }
   };
 
-  function handleClear() {
+  function handleFullClear() {
     const bgCanvas = bgCanvasRef.current;
     const drawCanvas = drawCanvasRef.current;
 
@@ -484,6 +484,17 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     setHistory([]);
     setTransform({ x: 0, y: 0, scale: 1 }); // Reset zoom on clear
   }
+
+  const handleSketchClear = () => {
+    const drawCanvas = drawCanvasRef.current;
+    if (drawCanvas) {
+      const ctx = drawCanvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+      }
+    }
+    setHistory([]);
+  };
 
   function drawImageProp(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number, offsetX = 0.5, offsetY = 0.5) {
     if (arguments.length === 2) {
@@ -582,7 +593,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
         {/* Clear */}
         <div className="bg-white border border-black shadow-sm -mt-px">
           <button
-            onClick={handleClear}
+            onClick={handleSketchClear}
             className="p-2 hover:bg-red-50 text-red-600 transition-colors flex items-center justify-center w-full"
             title="Clear Canvas"
           >
@@ -592,8 +603,9 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       </div>
 
       {/* Upload Buttons */}
+      {/* Upload Buttons or X (Full Clear) */}
       {
-        !backgroundImage && (
+        !backgroundImage ? (
           <div className="absolute top-4 right-4 z-30 flex gap-0 border border-black bg-white shadow-none">
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -610,6 +622,13 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
             </label>
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
           </div>
+        ) : (
+          <button
+            onClick={handleFullClear}
+            className="absolute top-4 right-4 z-30 hover:opacity-60 transition-opacity"
+          >
+            <X size={24} strokeWidth={1.5} />
+          </button>
         )
       }
 
