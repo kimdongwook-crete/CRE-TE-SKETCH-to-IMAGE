@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useEffect, useState, forwardRef, useImperativeHandle, useCallback } from 'react';
 import { Pen, Eraser, Trash2, Undo, ImageIcon, Camera } from 'lucide-react';
 
 interface CanvasBoardProps {
@@ -39,7 +39,7 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
   const lastTouchCenterRef = useRef<{ x: number, y: number } | null>(null);
 
   // Helper: Paint the background layer
-  const paintBackground = () => {
+  const paintBackground = useCallback(() => {
     const bgCanvas = bgCanvasRef.current;
     if (!bgCanvas) return;
     const ctx = bgCanvas.getContext('2d');
@@ -51,10 +51,10 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     if (backgroundImage) {
       drawImageProp(ctx, backgroundImage, 0, 0, bgCanvas.width, bgCanvas.height);
     }
-  };
+  }, [backgroundImage]);
 
   // Helper: Handle Resizing (Layout)
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const bgCanvas = bgCanvasRef.current;
     const drawCanvas = drawCanvasRef.current;
     const container = containerRef.current;
@@ -65,7 +65,6 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
     if (clientWidth === 0 || clientHeight === 0) return;
 
     // Only update and clear if dimensions actually changed
-    // Note: We use the canvas internal size vs client size check
     if (bgCanvas.width !== clientWidth || bgCanvas.height !== clientHeight) {
       // Save current drawing
       const drawCtx = drawCanvas.getContext('2d');
@@ -91,14 +90,27 @@ const CanvasBoard = forwardRef<CanvasRef, CanvasBoardProps>(({ onImageChange }, 
       // Re-paint background after resize
       paintBackground();
     }
-  };
+  }, [paintBackground]);
 
-  // Effect: Initialization & Resize Listener
+  // Effect: Initialization & Resize Listener (Optimized with rAF)
+  const animationFrameId = useRef<number | null>(null);
+
   useEffect(() => {
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const onResize = () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = requestAnimationFrame(() => {
+        handleResize();
+      });
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, [handleResize]);
 
   // Effect: Re-paint background when image changes
   useEffect(() => {

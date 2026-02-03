@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ApiKeyGuard } from './components/ApiKeyGuard';
 import CanvasBoard, { CanvasRef } from './components/CanvasBoard';
 import ResultViewer from './components/ResultViewer';
 import Library from './components/Library';
-import { analyzeSketch, generateBlueprintImage } from './services/geminiService';
 import { saveToLibrary, getLibrary, deleteFromLibrary } from './utils/storage';
 import { ImageResolution, HistoryItem, ThemeMode, AnalysisReport, BlueprintMode } from './types';
 import { X, Sun, Moon, Zap, ImageIcon, Camera, Trash2, History } from 'lucide-react';
-import { parseAnalysisReport } from './utils/reportParser';
 import { metadata } from './constants';
+import { useBlueprintGeneration } from './hooks/useBlueprintGeneration';
 
+// Style Definitions constant remains the same
 const STYLE_DEFINITIONS = {
   A: {
     architect: "CRE-TE STYLE A",
@@ -69,20 +69,15 @@ const STYLE_DEFINITIONS = {
 
 function App() {
   const [activeTab, setActiveTab] = useState<'create' | 'result'>('create');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingStep, setProcessingStep] = useState<string>('');
-  const [progress, setProgress] = useState<number>(0);
 
-  // State
+  // Input State
   const [userPrompt, setUserPrompt] = useState('');
   const [resolution, setResolution] = useState<ImageResolution>(ImageResolution.Res_2K);
   const [aspectRatio, setAspectRatio] = useState<string>('4:3');
   const [vizMode, setVizMode] = useState<'CONCEPT' | 'DETAIL'>('CONCEPT');
   const [styleMode, setStyleMode] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE'>('NONE');
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [hasCanvasContent, setHasCanvasContent] = useState(false);
-  const [analysisReport, setAnalysisReport] = useState<AnalysisReport | null>(null);
 
   // Style View State
   const [viewingStyle, setViewingStyle] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE' | null>(null);
@@ -91,14 +86,32 @@ function App() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [libraryItems, setLibraryItems] = useState<HistoryItem[]>([]);
   const [theme, setTheme] = useState<ThemeMode>('light');
-  const [showPleaseWait, setShowPleaseWait] = useState(false);
-  const [loadingSeconds, setLoadingSeconds] = useState(0);
 
   const canvasRef = useRef<CanvasRef>(null);
 
-  // Ref to track generation process ID for cancellation
-  const generationIdRef = useRef(0);
-  const pleaseWaitTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Custom Hook for Generation Logic
+  const {
+    isProcessing,
+    processingStep,
+    progress,
+    generatedImage,
+    analysisReport,
+    showPleaseWait,
+    loadingSeconds,
+    generate,
+    cancel,
+    reset: resetGeneration,
+    setGeneratedImage,
+    setAnalysisReport
+  } = useBlueprintGeneration({
+    onComplete: (newItem) => {
+      setActiveTab('result');
+      // Save to library
+      saveToLibrary(newItem).then((updatedItems) => {
+        setLibraryItems(updatedItems);
+      });
+    }
+  });
 
   // Load Library & Theme on Mount
   useEffect(() => {
@@ -107,15 +120,11 @@ function App() {
       setLibraryItems(items);
     };
     initData();
-
-    initData();
   }, []);
 
   // Update Metadata
   useEffect(() => {
     document.title = metadata.title;
-
-    // Update description meta tag
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
@@ -139,149 +148,21 @@ function App() {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
-  // Loading Text Cycle Logic (10s step / 5s "PLEASE WAIT")
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isProcessing) {
-      setLoadingSeconds(0);
-      interval = setInterval(() => {
-        setLoadingSeconds(prev => prev + 1);
-      }, 1000);
-    } else {
-      setLoadingSeconds(0);
-    }
-    return () => clearInterval(interval);
-  }, [isProcessing]);
-
   const handleStyleSelect = (style: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE') => {
     setStyleMode(style);
     setViewingStyle(null);
   };
 
-  const handleGenerate = async () => {
-    if (!canvasRef.current && !originalImage) return;
-
-    // 1. Get Image
-    let currentImage = originalImage;
-    if (canvasRef.current) {
-      const exported = canvasRef.current.exportImage();
-      if (exported) currentImage = exported;
-    }
-
-    if (!currentImage) return;
-
-    // Start Processing
-    const currentId = Date.now();
-    generationIdRef.current = currentId;
-    setIsProcessing(true);
-    setGeneratedImage(null);
-    setProgress(0);
-    setHasCanvasContent(true);
-    setOriginalImage(currentImage); // Ensure original image is set
-    // Initial 3-second timer for "PLEASE WAIT" message
-    if (pleaseWaitTimerRef.current) clearTimeout(pleaseWaitTimerRef.current);
-    pleaseWaitTimerRef.current = setTimeout(() => {
-      setShowPleaseWait(true);
-    }, 3000);
-    let progressTimer: NodeJS.Timeout;
-    const startProgressInfo = (target: number, speed: number) => {
-      clearInterval(progressTimer);
-      progressTimer = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= target) {
-            clearInterval(progressTimer);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, speed);
-    };
-
-    try {
-      // --- PHASE 1: ANALYZING ---
-      setProcessingStep('ANALYZING');
-      startProgressInfo(40, 50); // Target 40%, slow speed
-
-      const analysisMarkdown = await analyzeSketch(currentImage, userPrompt, vizMode, styleMode);
-      const parsedAnalysis = parseAnalysisReport(analysisMarkdown);
-
-      if (generationIdRef.current !== currentId) return;
-      setAnalysisReport(parsedAnalysis);
-
-      // --- PHASE 2: STYLING (Conditional) ---
-      if (styleMode !== 'NONE') {
-        setProcessingStep('STYLING');
-        // Fast increment to 60%
-        clearInterval(progressTimer);
-        setProgress(40);
-        startProgressInfo(60, 30);
-
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Artificial delay for UX
-      } else {
-        // Just bump to 50% if NONE
-        setProgress(50);
-      }
-
-      if (generationIdRef.current !== currentId) return;
-
-      // --- PHASE 3: GENERATING ---
-      setProcessingStep('GENERATING');
-      clearInterval(progressTimer);
-      startProgressInfo(95, 100); // Target 95%, slower for generation
-
-      const prompt = parsedAnalysis.execution.prompt;
-      const imageBase64 = await generateBlueprintImage(
-        currentImage,
-        prompt,
-        resolution,
-        aspectRatio
-      );
-
-      if (generationIdRef.current !== currentId) return;
-
-      // Complete
-      clearInterval(progressTimer);
-      setProgress(100);
-      setGeneratedImage(imageBase64);
-      setActiveTab('result');
-
-      const newItem: HistoryItem = {
-        id: crypto.randomUUID(),
-        timestamp: Date.now(),
-        originalImage: currentImage,
-        generatedImage: imageBase64,
-        prompt: userPrompt || prompt,
-        resolution: resolution,
-        analysisReport: parsedAnalysis
-      };
-
-      saveToLibrary(newItem).then((updatedItems) => {
-        setLibraryItems(updatedItems);
-      });
-
-    } catch (error) {
-      if (generationIdRef.current === currentId) {
-        console.error(error);
-        alert(`Transformation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
-    } finally {
-      if (generationIdRef.current === currentId) {
-        clearInterval(progressTimer);
-        if (pleaseWaitTimerRef.current) clearTimeout(pleaseWaitTimerRef.current);
-        setIsProcessing(false);
-        setProcessingStep('');
-        setShowPleaseWait(false);
-      }
-    }
-  };
-
-  const handleCancel = () => {
-    generationIdRef.current = 0; // Invalidate current process
-    if (pleaseWaitTimerRef.current) clearTimeout(pleaseWaitTimerRef.current);
-    setIsProcessing(false);
-    setProcessingStep('');
-    setProgress(0);
-    setShowPleaseWait(false);
+  const handleGenerateClick = () => {
+    generate(
+      canvasRef,
+      originalImage,
+      userPrompt,
+      resolution,
+      aspectRatio,
+      vizMode,
+      styleMode
+    );
   };
 
   const handleDownload = () => {
@@ -305,16 +186,11 @@ function App() {
 
   const handleReset = () => {
     setShowLibrary(false);
-    setGeneratedImage(null);
+    resetGeneration(); // Use hook's reset
     setOriginalImage(null);
-    setAnalysisReport(null); // Reset report
     setActiveTab('create');
     setUserPrompt('');
-    setVizMode('CONCEPT'); // Reset mode
-    setIsProcessing(false);
-    setProcessingStep('');
-    setProgress(0);
-    // Also clear canvas
+    setVizMode('CONCEPT');
     if (canvasRef.current) {
       canvasRef.current.clear();
     }
@@ -323,9 +199,9 @@ function App() {
   const handleLoadFromLibrary = (item: HistoryItem) => {
     setOriginalImage(item.originalImage);
     setGeneratedImage(item.generatedImage);
+    setAnalysisReport(item.analysisReport || null);
     setUserPrompt(item.prompt);
     setResolution(item.resolution);
-    setAnalysisReport(item.analysisReport || null); // Restore report
     setActiveTab('result');
     setShowLibrary(false);
   };
@@ -524,9 +400,9 @@ function App() {
                             <button
                               key={style}
                               onClick={() => {
-                                setViewingStyle(style as any);
-                                setAnalysisReport(null);
-                                setGeneratedImage(null);
+                                handleStyleSelect(style as any);
+                                // Also clear previous results via hook if needed, but styling just sets mode here
+                                resetGeneration(); // Clear result when changing style in Create tab
                               }}
                               className={`
                                 h-12 flex items-center justify-center font-display text-lg short:text-base transition-colors
@@ -618,14 +494,14 @@ function App() {
                     ) : (
                       isProcessing ? (
                         <button
-                          onClick={handleCancel}
+                          onClick={cancel}
                           className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black bg-transparent text-black dark:text-white z-[201] relative"
                         >
                           <span className="pt-1">CANCEL</span>
                         </button>
                       ) : (
                         <button
-                          onClick={handleGenerate}
+                          onClick={handleGenerateClick}
                           className="w-full py-3 short:py-2 font-display text-lg tracking-widest flex items-center justify-center gap-3 transition-all relative z-50 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                         >
                           <span className="pt-1">GENERATE</span>

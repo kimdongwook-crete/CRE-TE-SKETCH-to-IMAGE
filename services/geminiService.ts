@@ -2,13 +2,20 @@ import { GoogleGenAI } from "@google/genai";
 import { MODEL_ANALYSIS, MODEL_IMAGE_GEN, MODEL_ANALYSIS_FALLBACK, MODEL_IMAGE_GEN_FALLBACK, MODEL_IMAGE_REFINE, MODEL_IMAGE_REFINE_FALLBACK, TIMEOUT_ANALYSIS, TIMEOUT_IMAGE_GEN, TIMEOUT_REFINE, SCENARIO_PROFILES, SYSTEM_ARCHITECTURE_CONSTITUTION } from "../constants";
 import { ImageResolution } from "../types";
 
-// Helper to get client with current key
+// Singleton instance for the GoogleGenAI client
+let genAIInstance: GoogleGenAI | null = null;
+
+// Helper to get client with current key (Singleton Pattern)
 const getClient = () => {
+  if (genAIInstance) return genAIInstance;
+
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("API Key is missing. Please set VITE_GEMINI_API_KEY in your environment variables (or .env.local for local development).");
   }
-  return new GoogleGenAI({ apiKey });
+
+  genAIInstance = new GoogleGenAI({ apiKey });
+  return genAIInstance;
 };
 
 // Timeout Helper
