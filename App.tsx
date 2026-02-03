@@ -105,6 +105,7 @@ function App() {
     setAnalysisReport
   } = useBlueprintGeneration({
     onComplete: (newItem) => {
+      setOriginalImage(newItem.originalImage); // Fix: Update originalImage state for ResultViewer
       setActiveTab('result');
       // Save to library
       saveToLibrary(newItem).then((updatedItems) => {
@@ -150,7 +151,7 @@ function App() {
 
   const handleStyleSelect = (style: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'NONE') => {
     setStyleMode(style);
-    setViewingStyle(null);
+    setViewingStyle(style === 'NONE' ? null : style); // Fix: Open info tab for selected style
   };
 
   const handleGenerateClick = () => {
